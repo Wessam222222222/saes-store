@@ -32,6 +32,7 @@
         input[type="text"],
         input[type="number"],
         input[type="file"],
+        textarea,
         select {
             width: 100%;
             padding: 10px;
@@ -82,6 +83,9 @@
             <option value="electronics">إلكترونيات</option>
             <option value="laptops">لابتوب وكمبيوتر</option>
         </select>
+
+        <label for="productDescription">الوصف:</label>
+        <textarea id="productDescription" name="productDescription" required></textarea>
 
         <label for="imageSource">مصدر الصورة:</label>
         <select id="imageSource" name="imageSource" onchange="toggleImageInput()">
@@ -134,6 +138,7 @@
             var productPrice = document.getElementById("productPrice").value;
             var contactNumber = document.getElementById("contactNumber").value;
             var productCategory = document.getElementById("productCategory").value;
+            var productDescription = document.getElementById("productDescription").value;
             var imageSource = document.getElementById("imageSource").value;
             var productImage = imageSource === "upload" ? document.getElementById("productImage").value : document.getElementById("productImageUrl").value;
 
@@ -141,6 +146,7 @@
             var productData = {
                 productName: productName,
                 productPrice: productPrice,
+                productDescription: productDescription,
                 productImage: productImage,
                 contactNumber: contactNumber,
                 productCategory: productCategory
@@ -162,7 +168,7 @@
                 case "electronics":
                     window.location.href = "electronics.html";
                     break;
-                case "laptops":
+                    case "laptops":
                     window.location.href = "laptops.html";
                     break;
                 default:
