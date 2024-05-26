@@ -3,7 +3,6 @@
 <head>
 <title>Create Account</title>
 <style>
-/* أسلوب التنسيق هنا */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f4f4;
@@ -50,17 +49,6 @@ body {
   box-sizing: border-box;
 }
 
-.form-group input[type="password"]::after {
-  content: "\f084";
-  font-family: 'Font Awesome 5 Free';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #ccc;
-  pointer-events: none;
-}
-
 .btn {
   background-color: #007bff;
   color: #fff;
@@ -91,7 +79,7 @@ body {
   <div class="header">
     <h2>CREATE YOUR ACCOUNT</h2>
   </div>
-  <form id="registrationForm" action="الرئيسية.html" method="post">
+  <form id="registrationForm">
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required>
@@ -148,8 +136,8 @@ body {
     localStorage.setItem('country', country);
     localStorage.setItem('phone', phone);
 
-    // Redirect to home page
-    window.location.href = this.action;
+    // Redirect to account page
+    window.location.href = 'حسابي.html';
   });
 </script>
 
