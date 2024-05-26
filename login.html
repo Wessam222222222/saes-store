@@ -1,109 +1,114 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f2f2f2;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
 
-.container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-}
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
 
-.logo img {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
-}
+        form {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
 
-.logo h1 {
-    margin: 10px 0;
-    color: #00c8ff;
-    font-size: 24px;
-}
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
 
-.logo p {
-    margin: 0;
-    color: #00c8ff;
-    font-size: 18px;
-}
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-.input-group {
-    margin: 15px 0;
-}
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333333;
-    font-size: 16px;
-}
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
 
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
 
-button {
-    background-color: #00c8ff;
-    color: #ffffff;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #00a6d1;
-}
-
-p a {
-    color: #00c8ff;
-    text-decoration: none;
-    font-size: 16px;
-}
-</style>
+        .register-link {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="logo">
-        <img src="img/Colorful Mascot Illustrative Online Shop Logo.png" alt="Delivery Icon">
-        <h1>LARANA</h1>
-        <p>DELIVERY APP</p>
-    </div>
-    <form action="الرئيسية.html" method="post">
-        <div class="input-group">
-            <label for="email">Email:</label>
+    <h1>تسجيل الدخول</h1>
+    <form id="loginForm">
+        <div>
+            <label for="email">البريد الإلكتروني:</label>
             <input type="email" id="email" name="email" required>
         </div>
-        <div class="input-group">
-            <label for="password">Password:</label>
+        <div>
+            <label for="password">كلمة المرور:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">تسجيل الدخول</button>
+        <p id="errorMessage" class="error-message"></p>
     </form>
-    <p>Don't have an account? <a href="register.html">Create an account</a></p>
-</div>
 
+    <div class="register-link">
+        <p>ليس لديك حساب؟ <a href="register.html">انقر هنا للتسجيل</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // استرداد بيانات تسجيل الدخول المُدخلة من المستخدم
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // استرداد بيانات المستخدم من Local Storage
+            const storedEmail = localStorage.getItem('email');
+            const storedPassword = localStorage.getItem('password');
+            
+            // التحقق من بيانات تسجيل الدخول
+            if (email === storedEmail && password === storedPassword) {
+                alert('تم تسجيل الدخول بنجاح!');
+                window.location.href = 'الرئيسية.html';
+            } else {
+                document.getElementById('errorMessage').innerText = 'البريد الإلكتروني أو كلمة المرور غير صحيحة!';
+            }
+        });
+    </script>
 </body>
 </html>
