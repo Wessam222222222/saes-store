@@ -97,14 +97,14 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // استرداد بيانات المستخدم من Local Storage
+            // استرداد البيانات المخزنة في localStorage
             const storedEmail = localStorage.getItem('email');
             const storedPassword = localStorage.getItem('password');
             
-            // التحقق من بيانات تسجيل الدخول
+            // الشروط التحقق من بيانات تسجيل الدخول
             if (email === storedEmail && password === storedPassword) {
-                alert('تم تسجيل الدخول بنجاح!');
-                window.location.href = 'الرئيسية.html';
+                // توجيه المستخدم إلى صفحة حسابي
+                window.location.href = 'حسابي.html';
             } else {
                 document.getElementById('errorMessage').innerText = 'البريد الإلكتروني أو كلمة المرور غير صحيحة!';
             }
