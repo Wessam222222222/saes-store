@@ -1,0 +1,157 @@
+<!DOCTYPE html>  
+<html>
+<head>
+<title>Create Account</title>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  width: 300px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group input[type="password"]::after {
+  content: "\f084";
+  font-family: 'Font Awesome 5 Free';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ccc;
+  pointer-events: none;
+}
+
+.btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.country-flag {
+  width: 20px;
+  vertical-align: middle;
+}
+
+.phone-code {
+  margin-left: 5px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>CREATE YOUR ACCOUNT</h2>
+  </div>
+  <form id="registrationForm" action="الرئيسية.html" method="post">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="fullname">Full Name:</label>
+      <input type="text" id="fullname" name="fullname" required>
+    </div>
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+      <label for="confirm-password">Repeat Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" required>
+    </div>
+    <div class="form-group">
+      <label for="country">Country:</label>
+      <select id="country" name="country" required>
+        <option value="">Select a country</option>
+        <option value="OM">Oman <img class="country-flag" src="https://www.countryflags.io/OM/flat/16.png"><span class="phone-code">+968</span></option>
+        <option value="SA">Saudi Arabia <img class="country-flag" src="https://www.countryflags.io/SA/flat/16.png"><span class="phone-code">+966</span></option>
+        <option value="YE">Yemen <img class="country-flag" src="https://www.countryflags.io/YE/flat/16.png"><span class="phone-code">+967</span></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+    </div>
+    <button type="submit" class="btn">Create Account</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Get form values
+    var email = document.getElementById('email').value;
+    var fullname = document.getElementById('fullname').value;
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    var country = document.getElementById('country').value;
+    var phone = document.getElementById('phone').value;
+    
+    // Store user data in localStorage
+    localStorage.setItem('email', email);
+    localStorage.setItem
+    ('fullname', fullname);
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
+    localStorage.setItem('country', country);
+    localStorage.setItem('phone', phone);
+
+    // Redirect to home page
+    window.location.href = this.action;
+  });
+</script>
+
+</body>
+</html>
