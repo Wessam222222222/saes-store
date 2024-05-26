@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دردشاتي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            padding-bottom: 60px;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+        }
+        .chat-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 20px;
+        }
+        .chat-list li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-list img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+        }
+        .chat-details {
+            flex: 1;
+        }
+        .chat-details h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .chat-details p {
+            margin: 5px 0 0 0;
+            color: #666;
+        }
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        footer .footer-icons {
+            display: flex;
+            justify-content: space-around;
+        }
+        footer .footer-icons a {
+            text-decoration: none;
+        }
+        footer .footer-icons a button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer .footer-icons a button img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+        footer .footer-icons a button:hover {
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>دردشاتي</h1>
+    </header>
+    <ul class="chat-list">
+        <li>
+            <img src="c:/Users/Maryam%20DES/Downloads/user.png" alt="User 1">
+            <div class="chat-details">
+                <a href="chat.html?user=1"><h2>اسم المستخدم 1</h2></a>
+                <p>آخر رسالة...</p>
+            </div>
+        </li>
+        <li>
+            <img src="c:/Users/Maryam%20DES/Downloads/user.png" alt="User 2">
+            <div class="chat-details">
+                <a href="chat.html?user=2"><h2>اسم المستخدم 2</h2></a>
+                <p>آخر رسالة...</p>
+            </div>
+        </li>
+        <!-- إضافة المزيد من الدردشات -->
+    </ul>
+    <footer>
+        <div class="footer-icons">
+            <a href="index.html"><button><img src="img/home.png" alt="الرئيسية">الرئيسية</button></a>
+            <a href="add-product.html"><button><img src="c:/Users/Maryam%20DES/Downloads/plus%20(1).png" alt="إضافة منتج جديد">إضافة منتج جديد</button></a>
+            <a href="my-ads.html"><button><img src="c:/Users/Maryam%20DES/Downloads/marketing.png" alt="إعلاناتي">إعلاناتي</button></a>
+            <a href="حسبابي.html"><button><img src="c:/Users/Maryam%20DES/Downloads/user.png" alt="حسابي">حسابي</button></a>
+            <a href="chats.html"><button><img src="c:/Users/Maryam%20DES/Downloads/chat-bubbles-with-ellipsis.png" alt="دردشاتي">دردشاتي</button></a>
+        </div>
+    </footer>
+</body>
+</html>
