@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>السوق</title>
     <style>
-         /* أسلوب التنسيق هنا */
+        /* الأسلوب المشترك */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             direction: rtl;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
+            padding-bottom: 60px;
         }
         header {
             background-color: #007bff;
@@ -23,6 +24,110 @@
         h1 {
             margin: 0;
         }
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        footer .footer-icons {
+            display: flex;
+            justify-content: space-around;
+        }
+        footer .footer-icons a {
+            text-decoration: none;
+        }
+        footer .footer-icons a button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer .footer-icons a button img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+        footer .footer-icons a button:hover {
+            color: #ffcc00;
+        }
+
+        /* أسلوب الصفحة الأولى */
+        .container {
+            width: 300px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .header h2 {
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="password"]::after {
+            content: "\f084";
+            font-family: 'Font Awesome 5 Free';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            pointer-events: none;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .country-flag {
+            width: 20px;
+            vertical-align: middle;
+        }
+        .phone-code {
+            margin-left: 5px;
+        }
+
+        /* أسلوب الصفحة الثانية */
         .search-bar {
             display: flex;
             justify-content: center;
@@ -110,7 +215,8 @@
         .category:hover {
             transform: scale(1.05);
         }
-        .category img {
+        .category img
+        {
             max-width: 100%;
             border-radius: 50%;
         }
@@ -120,65 +226,11 @@
             margin-top: 10px;
             color: #333;
         }
-        footer {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        footer .footer-icons {
-            display: flex;
-            justify-content: space-around;
-        }
-        footer .footer-icons a {
-            text-decoration: none;
-        }
-        footer .footer-icons a button {
-            background-color: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        footer .footer-icons a button img {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 5px;
-        }
-        footer .footer-icons a button:hover {
-            color: #ffcc00;
-        }
     </style>
-    <script>
-        function search() {
-            var query = document.getElementById('search-input').value;
-            if (query) {
-                alert('Searching for: ' + query); // Replace with search functionality
-                // window.location.href = 'search-results.html?query=' + encodeURIComponent(query);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    search();
-                }
-            });
-        });
-    </script>
 </head>
 <body>
     <header>
-        <h1>sales store</h1>
+        <h1>السوق</h1>
     </header>
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="ابحث في السوق المفتوح...">
@@ -188,40 +240,40 @@
         <h2>أعلن هنا</h2>
         <p>تواصل معنا</p>
         <div class="ad-images">
-            <img src="https://opensooqui2.os-cdn.com/prod/public/images/homePage/desktop/homeBannerDesktopOne-ar.webp" alt="إعلان 1">
-            <img src="https://opensooqui2.os-cdn.com/prod/public/images/homePage/homeBanner-2.webp" alt="إعلان 2">
-            <img src="https://opensooqui2.os-cdn.com/prod/public/images/homePage/homeBanner-1.webp" alt="إعلان 3">
-            <img src="https://opensooqui2.os-cdn.com/api/apiV/web/categories/BusinessIndustrial.webp" alt="إعلان 4">
+            <img src="c:/Users/Maryam%20DES/Downloads/iphone-15-PRO-gallery-colours.gif" alt="إعلان 1">
+            <img src="c:/Users/Maryam%20DES/Downloads/images%20(7).jpeg" alt="إعلان 2">
+            <img src="c:/Users/Maryam%20DES/Downloads/31b954506ce807c9c457624edd04207c.jpg" alt="إعلان 3">
+            <img src="c:/Users/Maryam%20DES/Downloads/wpKo69MZQrwKHEM6mhC3H9-1200-80.png" alt="إعلان 4">
         </div>
     </div>
     <div class="categories">
         <div class="category">
             <a href="vehicles.html">
-                <img src="img/Autos.webp" alt="سيارات">
+                <img src="c:/Users/Maryam%20DES/Downloads/Autos.webp" alt="سيارات">
                 <p>مركبات</p>
             </a>
         </div>
         <div class="category">
             <a href="motorcycles.html">
-                <img src="img/MotorcyclesHome.webp" alt="دراجات نارية">
+                <img src="c:/Users/Maryam%20DES/Downloads/MotorcyclesHome.webp" alt="دراجات نارية">
                 <p>دراجات نارية</p>
             </a>
         </div>
         <div class="category">
             <a href="stores.html">
-                <img src="img/Properties.webp" alt="بيت">
+                <img src="c:/Users/Maryam%20DES/Downloads/Properties.webp" alt="بيت">
                 <p>بيت</p>
             </a>
         </div>
         <div class="category">
             <a href="electronics.html">
-                <img src="img/Electronics.webp" alt="إلكترونيات">
+                <img src="c:/Users/Maryam%20DES/Downloads/Electronics.webp" alt="إلكترونيات">
                 <p>إلكترونيات</p>
             </a>
         </div>
         <div class="category">
             <a href="laptops.html">
-                <img src="img/ComputerAndLaptops.webp" alt="لابتوب وكمبيوتر">
+                <img src="c:/Users/Maryam%20DES/Downloads/ComputerAndLaptops.webp" alt="لابتوب وكمبيوتر">
                 <p>لابتوب وكمبيوتر</p>
             </a>
         </div>
@@ -250,15 +302,15 @@
                 <p>أقسام أخرى</p>
             </a>
         </div>
-        
     </div>
     <footer>
         <div class="footer-icons">
-            <a href="الرئيسية.html"><button><img src="img/home.png" alt="الرئيسية">الرئيسية</button></a>
-            <a href="add-product.html"><button><img src="img/plus (1).png" alt="إضافة منتج جديد">إضافة منتج جديد</button></a>
-            <a href="my-ads.html"><button><img src="img/marketing.png" alt="إعلاناتي">إعلاناتي</button></a>
-            <a href="حسبابي.html"><button><img src="img/user.png" alt="حسابي">حسابي</button></a>
-            <a href="#"><button><img src="img/chat-bubbles-with-ellipsis.png" alt="دردشاتي">دردشاتي</button></a>
+            <a
+            href="الرئيسية.html"><button><img src="img/home.png" alt="الرئيسية">الرئيسية</button></a>
+            <a href="add-product.html"><button><img src="c:/Users/Maryam%20DES/Downloads/plus%20(1).png" alt="إضافة منتج جديد">إضافة منتج جديد</button></a>
+            <a href="my-ads.html"><button><img src="c:/Users/Maryam%20DES/Downloads/marketing.png" alt="إعلاناتي">إعلاناتي</button></a>
+            <a href="حسبابي.html"><button><img src="c:/Users/Maryam%20DES/Downloads/user.png" alt="حسابي">حسابي</button></a>
+            <a href="chats.html"><button><img src="c:/Users/Maryam%20DES/Downloads/chat-bubbles-with-ellipsis.png" alt="دردشاتي">دردشاتي</button></a>
         </div>
     </footer>
 </body>
