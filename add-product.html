@@ -15,6 +15,7 @@
         h1 {
             text-align: center;
             color: #007bff;
+            margin-bottom: 20px;
         }
         form {
             text-align: center;
@@ -23,6 +24,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
         }
         label {
             display: block;
@@ -32,13 +35,13 @@
         input[type="text"],
         input[type="number"],
         input[type="file"],
-        textarea,
         select {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         input[type="submit"] {
             background-color: #007bff;
@@ -84,9 +87,6 @@
             <option value="laptops">لابتوب وكمبيوتر</option>
         </select>
 
-        <label for="productDescription">الوصف:</label>
-        <textarea id="productDescription" name="productDescription" required></textarea>
-
         <label for="imageSource">مصدر الصورة:</label>
         <select id="imageSource" name="imageSource" onchange="toggleImageInput()">
             <option value="upload">تحميل من الجهاز</option>
@@ -121,7 +121,7 @@
         }
 
         function updateRemainingProducts() {
-            var productCount = localStorage.length;
+            var productCount = Object.keys(localStorage).filter(key => key.startsWith('product_')).length;
             var remainingProducts = MAX_PRODUCTS - productCount;
             document.getElementById("remainingProducts").innerText = "عدد الإعلانات المتبقية: " + remainingProducts;
         }
@@ -129,7 +129,8 @@
         document.getElementById("addProductForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            if (localStorage.length >= MAX_PRODUCTS) {
+            var productCount = Object.keys(localStorage).filter(key => key.startsWith('product_')).length;
+            if (productCount >= MAX_PRODUCTS) {
                 alert("لقد وصلت إلى الحد الأقصى من الإعلانات المسموح بها.");
                 return;
             }
@@ -138,15 +139,13 @@
             var productPrice = document.getElementById("productPrice").value;
             var contactNumber = document.getElementById("contactNumber").value;
             var productCategory = document.getElementById("productCategory").value;
-            var productDescription = document.getElementById("productDescription").value;
             var imageSource = document.getElementById("imageSource").value;
-            var productImage = imageSource === "upload" ? document.getElementById("productImage").value : document.getElementById("productImageUrl").value;
+            var productImage = imageSource === "upload" ? document.getElementById("productImage").files[0].name : document.getElementById("productImageUrl").value;
 
             var productID = generateProductID();
             var productData = {
                 productName: productName,
                 productPrice: productPrice,
-                productDescription: productDescription,
                 productImage: productImage,
                 contactNumber: contactNumber,
                 productCategory: productCategory
@@ -168,7 +167,7 @@
                 case "electronics":
                     window.location.href = "electronics.html";
                     break;
-                    case "laptops":
+                case "laptops":
                     window.location.href = "laptops.html";
                     break;
                 default:
