@@ -41,8 +41,11 @@
             border-radius: 15px;
             overflow: hidden;
             max-width: 300px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* تغيير ظل البطاقة */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
         
         .card:hover {
@@ -59,7 +62,7 @@
         }
         
         .card-content .price {
-            color: #ff4d4d; /* تغيير لون السعر */
+            color: #ff4d4d;
             font-size: 20px;
         }
         
@@ -78,19 +81,19 @@
         }
         
         .card-content .actions button {
-            padding: 10px 15px; /* تعديل حجم الأزرار */
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         
         .card-content .actions .chat {
-            background-color: #28a745; /* تغيير لون زر الدردشة */
+            background-color: #28a745;
             color: white;
         }
         
         .card-content .actions .call {
-            background-color: #007bff; /* تغيير لون زر الاتصال */
+            background-color: #007bff;
             color: white;
         }
         
@@ -109,80 +112,50 @@
             background-color: #007bff;
             border: none;
             border-radius: 5px;
-            padding: 10px 15px; /* تعديل حجم الأزرار */
+            padding: 10px 15px;
             color: white;
             cursor: pointer;
         }
-        
     </style>
 </head>
 <body>
     <header>
-        <!-- رأس الصفحة مع عنوان الصفحة -->
         <h1>سيارات للبيع</h1>
     </header>
 
     <div id="adsContainer">
         <!-- سيتم إضافة الإعلانات هنا من خلال السكربت -->
-        <!-- البطاقة الأولى للإعلان -->
-        <div class="card">
-            <img src="c:\Users\Maryam DES\Downloads\bmw-m4-parked-on-a-wet-road-at-night_2.jpg" alt="صورة السيارة">
-            <div class="card-content">
-                <div class="price">11,900 ريال</div>
-                <div class="details">رنج روفر سبورت سوبر تشارج اوتوبيوغرافي، 2015</div>
-                <div class="location">الموج</div>
-                <div class="actions">
-                    <button class="chat">دردش</button>
-                    <button class="call">993611XX 📞</button>
-                </div>
-            </div>
-        </div>
-        <!-- البطاقة الثانية للإعلان -->
-        <div class="card">
-            <img src="c:\Users\Maryam DES\Downloads\bmw-m4-parked-on-a-wet-road-at-night_2.jpg" alt="صورة السيارة">
-            <div class="card-content">
-                <div class="price">15,000 ريال</div>
-                <div class="details">رنج روفر سبورت سوبر تشارج اوتوبيوغرافي، 2015</div>
-                <div class="location">الموج</div>
-                <div class="actions">
-                    <button class="chat">دردش</button>
-                    <button class="call">773661XX 📞</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <footer>
-        <!-- تذييل الصفحة مع أزرار التنقل -->
-        <button>إضافات</button>
-        <button>إعلاناتي</button>
-        <button>الدردشة</button>
-        <button>الرئيسية</button>
+        <button onclick="location.href='add.html'">إضافة</button>
+        <button onclick="location.href='myads.html'">إعلاناتي</button>
+        <button onclick="alert('سيتم تحديث الدردشة قريبًا!')">الدردشة</button>
+        <button onclick="location.href='index.html'">الرئيسية</button>
     </footer>
 
     <script>
-        // سكربت JavaScript لعرض الإعلانات المحفوظة
         function displayPublishedAds() {
             var adsContainer = document.getElementById("adsContainer");
             adsContainer.innerHTML = ""; // مسح الإعلانات السابقة
 
-            // جلب الإعلانات المحفوظة من localStorage
             for (var i = 0; i < localStorage.length; i++) {
                 var key = localStorage.key(i);
                 if (key.startsWith("product_")) {
                     var adData = JSON.parse(localStorage.getItem(key));
-                    var adElement = document.createElement("div");
+                    var adElement = document.createElement("a");
                     adElement.classList.add("card");
+                    adElement.href = "ad-details.html?id=" + key;
+                    var imageTag = "";
+                    if (adData.images && adData.images.length > 0) {
+                        imageTag = `<img src="${adData.images[0]}" alt="${adData.productName}">`;
+                    }
                     adElement.innerHTML = `
-                        <img src="${adData.productImage}" alt="${adData.productName}">
+                        ${imageTag}
                         <div class="card-content">
                             <div class="price">${adData.productPrice} ريال</div>
-                        <div class="details">${adData.productName}</div>
-                            <div class="location">${adData.productLocation}</div>
-                            <div class="actions">
-                                <button class="chat">دردش</button>
-                                <button class="call">${adData.contactNumber} 📞</button>
-                            </div>
+                            <div class="details">${adData.productName}</div>
+                            <div class="location">${adData.productLocation || ""}</div>
                         </div>
                     `;
                     adsContainer.appendChild(adElement);
@@ -190,7 +163,6 @@
             }
         }
 
-        // استدعاء الدالة عند تحميل الصفحة
         window.onload = function() {
             displayPublishedAds();
         };
