@@ -63,11 +63,6 @@
             justify-content: space-between;
         }
 
-        .container .contact a {
-            flex: 1;
-            text-decoration: none;
-        }
-
         .container .contact button {
             flex: 1;
             padding: 10px 15px;
@@ -134,8 +129,8 @@
         <div class="condition" id="productCondition"></div>
         <div class="contact-number" id="productContactNumber"></div>
         <div class="contact">
-            <a id="callLink" href="#"><button class="call">اتصل</button></a>
             <button class="chat" onclick="handleChatClick()">دردش</button>
+            <button class="call" id="callButton">اتصل</button>
         </div>
     </div>
 
@@ -166,14 +161,24 @@
                 document.getElementById("productCondition").innerText = "الحالة: " + (adData.productCondition || "");
                 document.getElementById("productContactNumber").innerText = "رقم البائع: " + (adData.contactNumber || "");
 
-                // تعيين رابط الاتصال برقم الهاتف
-                var contactNumber = adData.contactNumber || "";
-                document.getElementById("callLink").href = "tel:" + contactNumber;
+                var currentImageIndex = 0;
+                var images = adData.images;
+
+                // تحديث الصورة عند النقر عليها
+                document.getElementById("productImage").onclick = function() {
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    this.src = images[currentImageIndex];
+                };
             }
         }
 
         function handleChatClick() {
             alert("سيتم تحديث الدردشة قريبًا!");
+        }
+
+        function handleCallClick() {
+            var contactNumber = document.getElementById("productContactNumber").innerText.replace("رقم البائع: ", "");
+            window.location.href = "tel:" + contactNumber;
         }
 
         window.onload = function() {
