@@ -6,213 +6,179 @@
     <title>تفاصيل الإعلان</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             direction: rtl;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #f5f5f5;
-            text-align: center;
-        }
-        h1 {
-            text-align: center;
-            color: #007bff;
-        }
-        #adDetails {
-            margin-top: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        #adDetails img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        #adDetails p {
-            margin: 5px 0;
-        }
-        .rating {
-            unicode-bidi: bidi-override;
-            direction: rtl;
-            text-align: center;
-        }
-        .rating > input {
-            display: none;
-        }
-        .rating > label {
-            display: inline-block;
-            padding: 5px;
-            font-size: 24px;
-            color: #ddd;
-            cursor: pointer;
-        }
-        .rating > label:hover,
-        .rating > input:checked ~ label {
-            color: #f90;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
             color: #333;
-            resize: none;
         }
-        button {
+
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container img {
+            width: 100%;
+            border-radius: 15px;
+            cursor: pointer; /* تحويل الصورة إلى نقرة قابلة للتنقل */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container img:hover {
+            transform: scale(1.1); /* تكبير الصورة عند التمرير فوقها */
+        }
+
+        .container h2 {
+            color: #007bff;
             margin-top: 10px;
+        }
+
+        .container .price {
+            color: #ff4d4d;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .container .details {
+            margin: 10px 0;
+        }
+
+        .container .location,
+        .container .model,
+        .container .condition,
+        .container .contact-number {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .container .contact {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .container .contact a {
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .container .contact button {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .container .contact button:last-child {
+            margin-right: 0;
+        }
+
+        .container .contact .chat {
+            background-color: #28a745;
+        }
+
+        .container .contact .call {
+            background-color: #007bff;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        footer button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
             background-color: #0056b3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
         }
-        .comments {
-            text-align: right;
-            margin-top: 20px;
-        }
-        .comments h2 {
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-        .comment {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #f9f9f9;
-            text-align: right;
-        }
-        .comment p {
-            margin: 5px 0;
+
+        footer button:hover {
+            background-color: #004198;
         }
     </style>
 </head>
 <body>
-    <h1>تفاصيل الإعلان</h1>
-    <div id="adDetails">
-        <!-- هنا سيتم عرض تفاصيل الإعلان -->
-    </div>
-    <div class="comments">
-        <h2>التعليقات</h2>
-        <div id="commentsContainer">
-            <!-- هنا سيتم عرض التعليقات -->
+    <div class="container">
+        <img id="productImage" src="" alt="صورة المنتج">
+        <h2 id="productName"></h2>
+        <div class="price" id="productPrice"></div>
+        <div class="details" id="productDetails"></div>
+        <div class="location" id="productLocation"></div>
+        <div class="model" id="productModel"></div>
+        <div class="condition" id="productCondition"></div>
+        <div class="contact-number" id="productContactNumber"></div>
+        <div class="contact">
+            <a id="callLink" href="#"><button class="call">اتصل</button></a>
+            <button class="chat" onclick="handleChatClick()">دردش</button>
         </div>
-        <p>عدد الأشخاص الذين قيموا هذا المنتج: <span id="ratingsCount">0</span></p>
-        <p>متوسط ​​التقييم: <span id="averageRating">0</span></p>
     </div>
+
+    <footer>
+        <button onclick="location.href='add.html'">إضافة</button>
+        <button onclick="location.href='myads.html'">إعلاناتي</button>
+        <button onclick="alert('سيتم تحديث الدردشة قريبًا!')">الدردشة</button>
+        <button onclick="location.href='index.html'">الرئيسية</button>
+    </footer>
 
     <script>
-        // استرجاع ID الإعلان من رابط الصفحة
-        var urlParams = new URLSearchParams(window.location.search);
-        var adID = urlParams.get('id');
-
-        // استرجاع بيانات الإعلان من localStorage باستخدام الID
-        var adData = JSON.parse(localStorage.getItem(adID));
-
-        // عرض تفاصيل الإعلان
-        var adDetailsContainer = document.getElementById("adDetails");
-        adDetailsContainer.innerHTML = `
-            <img src="${adData.productImage}" alt="${adData.productName}">
-            <p>${adData.productName}</p>
-            <p>السعر: ${adData.productPrice} ريال عماني</p>
-            <p>رقم الهاتف: ${adData.contactNumber}</p>
-            <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5" /><label for="star5">&#9733;</label>
-                <input type="radio" id="star4" name="rating" value="4" /><label for="star4">&#9733;</label>
-                <input type="radio" id="star3" name="rating" value="3" /><label for="star3">&#9733;</label>
-                <input type="radio" id="star2" name="rating" value="2" /><label for="star2">&#9733;</label>
-                <input type="radio" id="star1" name="rating" value="1" /><label for="star1">&#9733;</label>
-            </div>
-            <textarea id="comment" placeholder="اكتب تعليقًا هنا..."></textarea>
-            <button onclick="deleteComment()">حذف التعليق</button>
-            <button onclick="submitComment()">نشر التعليق</button>
-        `;
-
-        // Load comments from localStorage
-        var comments = JSON.parse(localStorage.getItem("comments")) || [];
-
-        // Display existing comments
-        var commentsContainer = document.getElementById("commentsContainer");
-        comments.forEach(function(comment, index) {
-            var commentElement = document.createElement("div");
-            commentElement.classList.add("comment");
-            commentElement.innerHTML = "<p>" + comment + "</p>" +
-                '<button onclick="deleteComment(' + index + ')">حذف</button>'; // إضافة زر حذف
-            commentsContainer.appendChild(commentElement);
-        });
-
-        // حذف التعليق
-        function deleteComment(index) {
-            // قم بحذف التعليق من قائمة التعليقات
-            comments.splice(index, 1);
-            // قم بتحديث قائمة التعليقات في localStorage
-            localStorage.setItem("comments", JSON.stringify(comments));
-
-            // قم بإعادة بناء واجهة المستخدم لعرض التعليقات بعد الحذف
-            displayComments();
+        function getQueryParam(param) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
         }
 
-        // نشر التعليق
-        function submitComment() {
-            var commentTextArea = document.getElementById("comment");
-            var comment = commentTextArea.value.trim();
-            if (comment !== "") {
-                // Add the comment to the array and localStorage
-                comments.push(comment);
-                localStorage.setItem("comments", JSON.stringify(comments));
+        function displayAdDetails() {
+            var adId = getQueryParam("id");
+            var adData = JSON.parse(localStorage.getItem(adId));
 
-                // Add the comment to the UI
-                displayComments();
+            if (adData) {
+                document.getElementById("productImage").src = adData.images[0];
+                document.getElementById("productName").innerText = adData.productName;
+                document.getElementById("productPrice").innerText = adData.productPrice + " ريال";
+                document.getElementById("productDetails").innerText = adData.productDetails || "";
+                document.getElementById("productLocation").innerText = adData.productLocation || "";
+                document.getElementById("productModel").innerText = "موديل: " + (adData.productModel || "");
+                document.getElementById("productCondition").innerText = "الحالة: " + (adData.productCondition || "");
+                document.getElementById("productContactNumber").innerText = "رقم البائع: " + (adData.contactNumber || "");
 
-                // Clear the comment text area
-                commentTextArea.value = "";
-
-                // Scroll to the top of the page to show the new comment
-                window.scrollTo(0, 0);
-            } else {
-                alert("الرجاء كتابة تعليق قبل النشر.");
+                // تعيين رابط الاتصال برقم الهاتف
+                var contactNumber = adData.contactNumber || "";
+                document.getElementById("callLink").href = "tel:" + contactNumber;
             }
         }
 
-        // Function to display comments in the UI
-        function displayComments() {
-            // Clear the current comments displayed in the UI
-            commentsContainer.innerHTML = "";
-
-            // Display existing comments
-            comments.forEach(function(comment, index) {
-                var commentElement = document.createElement("div");
-                commentElement.classList.add("comment");
-                commentElement.innerHTML = "<p>" + comment + "</p>" +
-                    '<button onclick="deleteComment(' + index + ')">حذف</button>'; // Add delete button
-                commentsContainer.appendChild(commentElement);
-            });
-
-            // Update the number of comments displayed
-            var ratingsCountElement = document.getElementById("ratingsCount");
-            ratingsCountElement.textContent = comments.length;
-
-            // Calculate average rating
-            var totalRating = 0;
-            comments.forEach(function(comment) {
-                totalRating += parseInt(comment);
-            });
-            var averageRating = totalRating / comments.length;
-
-            // Display the average rating with one decimal place
-            var averageRatingElement = document.getElementById("averageRating");
-            averageRatingElement.textContent = averageRating.toFixed(1);
+        function handleChatClick() {
+            alert("سيتم تحديث الدردشة قريبًا!");
         }
+
+        window.onload = function() {
+            displayAdDetails();
+        };
     </script>
 </body>
 </html>
-
