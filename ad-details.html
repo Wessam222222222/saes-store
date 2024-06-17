@@ -12,6 +12,7 @@
             padding: 0;
             background-color: #f5f5f5;
             color: #333;
+            font-size: 18px;
         }
 
         .container {
@@ -37,6 +38,7 @@
         .container h2 {
             color: #007bff;
             margin-top: 10px;
+            font-size: 24px;
         }
 
         .container .price {
@@ -45,16 +47,23 @@
             margin: 10px 0;
         }
 
-        .container .details {
-            margin: 10px 0;
-        }
-
+        .container .details,
         .container .location,
         .container .model,
         .container .condition,
-        .container .contact-number {
-            color: #666;
+        .container .contact-number,
+        .container .description-label,
+        .container .description {
             margin: 10px 0;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .container .description-label {
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+            font-size: 20px;
         }
 
         .container .contact {
@@ -71,7 +80,7 @@
             cursor: pointer;
             margin-right: 10px;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             transition: background-color 0.3s ease-in-out;
         }
@@ -108,7 +117,7 @@
             cursor: pointer;
             background-color: #0056b3;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             transition: background-color 0.3s ease-in-out;
         }
@@ -121,12 +130,15 @@
 <body>
     <div class="container">
         <img id="productImage" src="" alt="صورة المنتج">
+        <div class="image-count" id="imageCount"></div>
         <h2 id="productName"></h2>
         <div class="price" id="productPrice"></div>
         <div class="details" id="productDetails"></div>
         <div class="location" id="productLocation"></div>
         <div class="model" id="productModel"></div>
         <div class="condition" id="productCondition"></div>
+        <div class="description-label">وصف المنتج:</div>
+        <div class="description" id="productDescription"></div>
         <div class="contact-number" id="productContactNumber"></div>
         <div class="contact">
             <button class="chat" onclick="handleChatClick()">دردش</button>
@@ -151,15 +163,10 @@
             var adId = getQueryParam("id");
             var adData = JSON.parse(localStorage.getItem(adId));
 
-            if (adData) {
+            if (adData && adData.images && adData.images.length > 0) {
+                var imageCount = adData.images.length;
+                document.getElementById("imageCount").innerText = "عدد الصور: " + imageCount;
                 document.getElementById("productImage").src = adData.images[0];
-                document.getElementById("productName").innerText = adData.productName;
-                document.getElementById("productPrice").innerText = adData.productPrice + " ريال";
-                document.getElementById("productDetails").innerText = adData.productDetails || "";
-                document.getElementById("productLocation").innerText = adData.productLocation || "";
-                document.getElementById("productModel").innerText = "موديل: " + (adData.productModel || "");
-                document.getElementById("productCondition").innerText = "الحالة: " + (adData.productCondition || "");
-                document.getElementById("productContactNumber").innerText = "رقم البائع: " + (adData.contactNumber || "");
 
                 var currentImageIndex = 0;
                 var images = adData.images;
@@ -170,15 +177,25 @@
                     this.src = images[currentImageIndex];
                 };
             }
+
+            // عرض بقية تفاصيل الإعلان
+            document.getElementById("productName").innerText = adData.productName || "";
+            document.getElementById("productPrice").innerText = adData.productPrice + " ريال";
+            document.getElementById("productDetails").innerText = adData.productDetails || "";
+            document.getElementById("productLocation").innerText = adData.productLocation || "";
+            document.getElementById("productModel").innerText = "موديل: " + (adData.productModel || "");
+            document.getElementById("productCondition").innerText = "الحالة: " + (adData.productCondition || "");
+            document.getElementById("productDescription").innerText = adData.productDescription || "لا يوجد وصف";
+            document.getElementById("productContactNumber").innerText = "رقم البائع: " + (adData.contactNumber || "");
+
+            // إضافة خاصية الاتصال بالرقم
+            document.getElementById("callButton").onclick = function() {
+                window.location.href = "tel:" + adData.contactNumber;
+            };
         }
 
         function handleChatClick() {
             alert("سيتم تحديث الدردشة قريبًا!");
-        }
-
-        function handleCallClick() {
-            var contactNumber = document.getElementById("productContactNumber").innerText.replace("رقم البائع: ", "");
-            window.location.href = "tel:" + contactNumber;
         }
 
         window.onload = function() {
