@@ -1,72 +1,45 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
-
+const { MongoClient } = require('mongodb');
 const app = express();
+const port = 3000;
 
-// توصيل قاعدة البيانات MongoDB
-mongoose.connect('mongodb://localhost:27017/productsDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useFindAndModify', false);
+// Replace <password> with your MongoDB password
+const uri = "mongodb+srv://wessamahmedsamirahmed:<password>@cluster0.qoyhumj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-// تعريف نموذج الإعلان
-const adSchema = new mongoose.Schema({
-    productName: String,
-    productPrice: Number,
-    contactNumber: String,
-    productCategory: String,
-    productModel: String,
-    productCondition: String,
-    productDescription: String,
-    images: [String],
-    expiryDate: Date
-});
+let db;
 
-const Ad = mongoose.model('Ad', adSchema);
+MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(client => {
+    console.log('Connected to Database');
+    db = client.db('ads-database');
+  })
+  .catch(error => console.error(error));
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// تمكين الوصول لملفات العميل (frontend)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// POST endpoint لإضافة منتج جديد
-app.post('/addProduct', async (req, res) => {
-    try {
-        const {
-            productName,
-            productPrice,
-            contactNumber,
-            productCategory,
-            productModel,
-            productCondition,
-            productDescription,
-            images,
-            expiryDate
-        } = req.body;
-
-        const newAd = new Ad({
-            productName,
-            productPrice,
-            contactNumber,
-            productCategory,
-            productModel,
-            productCondition,
-            productDescription,
-            images,
-            expiryDate
-        });
-
-        const savedAd = await newAd.save();
-        res.status(201).json(savedAd);
-    } catch (error) {
-        console.error("Error saving product:", error);
-        res.status(500).send("حدث خطأ أثناء حفظ المنتج. يرجى المحاولة مرة أخرى.");
-    }
+app.post('/api/ads', (req, res) => {
+  const ad = req.body;
+  db.collection('ads').insertOne(ad)
+    .then(result => {
+      res.status(201).send(result);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    });
 });
 
-// التشغيل على المنفذ 3000
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.get('/api/ads', (req, res) => {
+  db.collection('ads').find().toArray()
+    .then(results => {
+      res.status(200).send(results);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
