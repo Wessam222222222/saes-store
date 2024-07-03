@@ -22,41 +22,65 @@
             max-width: 600px;
             margin: 20px auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden; /* لتحقيق تأثير العدسة */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .container img {
+        .card {
             width: 100%;
+            max-width: 600px;
             border-radius: 15px;
-            cursor: pointer; /* تحويل الصورة إلى نقرة قابلة للتنقل */
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
             transition: transform 0.3s ease-in-out;
         }
 
-        .container img:hover {
-            transform: scale(1.1); /* تكبير الصورة عند التمرير فوقها */
+        .card img:hover {
+            transform: scale(1.05); /* تكبير الصورة قليلاً عند التمرير فوقها */
+        }
+
+        .container .details {
+            width: 100%;
+            text-align: right;
+            padding: 10px;
+            color: #666;
         }
 
         .container h2 {
             color: #007bff;
-            margin-top: 10px;
             font-size: 24px;
+            margin-top: 10px;
+            margin-bottom: 10px; /* مسافة بين عنوان المنتج وبقية التفاصيل */
         }
 
         .container .price {
             color: #ff4d4d;
             font-size: 24px;
-            margin: 10px 0;
+            margin-bottom: 10px; /* مسافة بين السعر وبقية التفاصيل */
         }
 
-        .container .details,
         .container .location,
         .container .model,
         .container .condition,
         .container .contact-number,
         .container .description-label,
         .container .description {
-            margin: 10px 0;
+            margin-bottom: 10px; /* مسافة بين العناصر */
             font-size: 18px;
             color: #666;
+            text-align: right;
         }
 
         .container .description-label {
@@ -67,7 +91,7 @@
         }
 
         .container .contact {
-            margin-top: 20px;
+            margin-top: 10px; /* مسافة من الأسفل */
             display: flex;
             justify-content: space-between;
         }
@@ -97,63 +121,64 @@
             background-color: #007bff;
         }
 
-        footer {
-            background-color: #007bff;
-            color: white;
+        .prev-next-buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            justify-content: space-between;
             width: 100%;
-            padding: 10px 0;
+            z-index: 10; /* للتأكد من عرض الأسهم فوق الصورة */
         }
 
-        footer button {
-            padding: 10px 20px;
+        .prev-next-buttons button {
+            background: none;
             border: none;
-            border-radius: 5px;
+            font-size: 24px;
             cursor: pointer;
-            background-color: #0056b3;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            transition: background-color 0.3s ease-in-out;
+            color: #007bff;
+            transition: transform 0.3s ease-in-out;
         }
 
-        footer button:hover {
-            background-color: #004198;
+        .prev-next-buttons button:hover {
+            transform: scale(1.2);
+        }
+
+        .next-button {
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img id="productImage" src="" alt="صورة المنتج">
-        <div class="image-count" id="imageCount"></div>
-        <h2 id="productName"></h2>
-        <div class="price" id="productPrice"></div>
-        <div class="details" id="productDetails"></div>
-        <div class="location" id="productLocation"></div>
-        <div class="model" id="productModel"></div>
-        <div class="condition" id="productCondition"></div>
-        <div class="description-label">وصف المنتج:</div>
-        <div class="description" id="productDescription"></div>
-        <div class="contact-number" id="productContactNumber"></div>
-        <div class="contact">
-            <button class="chat" onclick="handleChatClick()">دردش</button>
-            <button class="call" id="callButton">اتصل</button>
+        <div class="prev-next-buttons">
+            <button class="prev-button" onclick="showPreviousImage()">&#10094;</button>
+            <button class="next-button" onclick="showNextImage()">&#10095;</button>
+        </div>
+        <div class="card">
+            <img id="productImage" src="" alt="صورة المنتج">
+        </div>
+        <div class="details">
+            <div class="image-count" id="imageCount"></div>
+            <h2 id="productName"></h2>
+            <div class="price" id="productPrice"></div>
+            <div class="location" id="productLocation"></div>
+            <div class="model" id="productModel"></div>
+            <div class="condition" id="productCondition"></div>
+            <div class="description-label">وصف المنتج:</div>
+            <div class="description" id="productDescription"></div>
+            <div class="contact-number" id="productContactNumber"></div>
+            <div class="contact">
+                <button class="chat" onclick="handleChatClick()">دردش</button>
+                <button class="call" id="callButton">اتصل</button>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <button onclick="location.href='add.html'">إضافة</button>
-        <button onclick="location.href='myads.html'">إعلاناتي</button>
-        <button onclick="alert('سيتم تحديث الدردشة قريبًا!')">الدردشة</button>
-        <button onclick="location.href='index.html'">الرئيسية</button>
-    </footer>
-
     <script>
+        var adData;
+        var currentImageIndex = 0;
+
         function getQueryParam(param) {
             var urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
@@ -161,27 +186,17 @@
 
         function displayAdDetails() {
             var adId = getQueryParam("id");
-            var adData = JSON.parse(localStorage.getItem(adId));
+            adData = JSON.parse(localStorage.getItem(adId));
 
             if (adData && adData.images && adData.images.length > 0) {
                 var imageCount = adData.images.length;
                 document.getElementById("imageCount").innerText = "عدد الصور: " + imageCount;
-                document.getElementById("productImage").src = adData.images[0];
-
-                var currentImageIndex = 0;
-                var images = adData.images;
-
-                // تحديث الصورة عند النقر عليها
-                document.getElementById("productImage").onclick = function() {
-                    currentImageIndex = (currentImageIndex + 1) % images.length;
-                    this.src = images[currentImageIndex];
-                };
+                document.getElementById("productImage").src = adData.images[currentImageIndex];
             }
 
             // عرض بقية تفاصيل الإعلان
             document.getElementById("productName").innerText = adData.productName || "";
             document.getElementById("productPrice").innerText = adData.productPrice + " ريال";
-            document.getElementById("productDetails").innerText = adData.productDetails || "";
             document.getElementById("productLocation").innerText = adData.productLocation || "";
             document.getElementById("productModel").innerText = "موديل: " + (adData.productModel || "");
             document.getElementById("productCondition").innerText = "الحالة: " + (adData.productCondition || "");
@@ -197,6 +212,21 @@
         function handleChatClick() {
             alert("سيتم تحديث الدردشة قريبًا!");
         }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % adData.images.length;
+            document.getElementById("productImage").src = adData.images[currentImageIndex];
+        }
+
+        function showPreviousImage() {
+            currentImageIndex = (currentImageIndex - 1 + adData.images.length) % adData.images.length;
+            document.getElementById("productImage").src = adData.images[currentImageIndex];
+        }
+
+        // تفعيل عرض الصورة بحجم كامل عند النقر عليها
+        document.getElementById("productImage").addEventListener("click", function() {
+            this.classList.toggle("fullscreen");
+        });
 
         window.onload = function() {
             displayAdDetails();
