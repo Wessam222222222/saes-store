@@ -1,99 +1,125 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دردشة</title>
+    <title>بوابة الأسرار المظلمة</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
+            background-color: #000;
+            color: #900;
+            font-family: 'Courier New', monospace;
+            text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            padding-bottom: 60px;
+            overflow: hidden;
+            cursor: none;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            margin-bottom: 20px;
+        #container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         h1 {
-            margin: 0;
+            font-size: 3em;
+            text-shadow: 0 0 10px #f00;
         }
-        .chat-container {
-            margin: 0 20px;
+        #message {
+            font-size: 1.5em;
+            margin-top: 20px;
         }
-        .message {
-            background-color: #fff;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .message.sent {
-            background-color: #e1ffc7;
-            text-align: right;
-        }
-        .message.received {
-            background-color: #fff;
-            text-align: left;
-        }
-        .message p {
-            margin: 0;
-        }
-        .message-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background-color: #fff;
-            border-top: 1px solid #ccc;
-            position: fixed;
-            bottom: 0;
-            width: calc(100% - 40px);
-            margin: 0 20px;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .message-form input {
-            width: 85%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .message-form button {
-            width: 10%;
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
+        #symbol {
+            font-size: 5em;
+            margin-top: 20px;
             cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
         }
-        .message-form button:hover {
-            background-color: #0056b3;
+        .hidden {
+            display: none;
+        }
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #f00;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        #encoded-message {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 1.2em;
+            color: #600;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>محادثة مع المستخدم</h1>
-    </header>
-    <div class="chat-container">
-        <div class="message received">
-            <p>مرحبا! كيف حالك؟</p>
-        </div>
-        <div class="message sent">
-            <p>أنا بخير، شكرا! وأنت؟</p>
-        </div>
-        <!-- المزيد من الرسائل -->
+    <div id="cursor"></div>
+    <div id="encoded-message"></div>
+    <div id="container">
+        <h1>بوابة الأسرار المظلمة</h1>
+        <div id="message">انقر على الرمز لكشف الحقيقة المخفية</div>
+        <div id="symbol">&#x2620;</div>
+        <div id="secret" class="hidden">لقد فتحت البوابة إلى العالم الآخر!</div>
     </div>
-    <form class="message-form">
-        <input type="text" placeholder="اكتب رسالة...">
-        <button type="submit">إرسال</button>
-    </form>
+
+    <script>
+        const symbols = ['&#x2620;', '&#x2623;', '&#x26A0;', '&#x2E2E;', '&#x2672;'];
+        let currentIndex = 0;
+        const symbolElement = document.getElementById('symbol');
+        const secretElement = document.getElementById('secret');
+        const encodedMessageElement = document.getElementById('encoded-message');
+        let clickCount = 0;
+
+        // رسالة مشفرة
+        const encodedMessage = "01001100 01100001 00100000 01110100 01100001 01101000 01111010 01100001 01101110 00100000 01101000 01100001 01110100 01101000 01100001";
+        encodedMessageElement.textContent = encodedMessage;
+
+        document.addEventListener('mousemove', (e) => {
+            document.getElementById('cursor').style.left = e.clientX + 'px';
+            document.getElementById('cursor').style.top = e.clientY + 'px';
+        });
+
+        symbolElement.addEventListener('click', () => {
+            clickCount++;
+            currentIndex = (currentIndex + 1) % symbols.length;
+            symbolElement.innerHTML = symbols[currentIndex];
+
+            if (clickCount === 6) {
+                secretElement.classList.remove('hidden');
+                document.body.style.animation = 'shake 0.5s';
+                document.body.style.animationIterationCount = 'infinite';
+                setTimeout(() => {
+                    secretElement.classList.add('hidden');
+                    document.body.style.animation = '';
+                }, 3000);
+            }
+
+            if (Math.random() < 0.2) {
+                document.body.style.backgroundColor = getRandomDarkColor();
+            }
+
+            playCreepySound();
+        });
+
+        function getRandomDarkColor() {
+            return '#' + Math.floor(Math.random()*5592405).toString(16);
+        }
+
+        function playCreepySound() {
+            const audio = new Audio('data:audio/wav;base64,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');
+            audio.play();
+        }
+
+        setInterval(() => {
+            document.body.style.color = getRandomDarkColor();
+        }, 3000);
+
+        // فك تشفير الرسالة بعد 10 ثوانٍ
+        setTimeout(() => {
+            encodedMessageElement.textContent = "لا تحزن هذا مجرد موقع للمتعة";
+        }, 10000);
+    </script>
 </body>
 </html>
