@@ -1,290 +1,335 @@
 <!DOCTYPE html>
-<html lang="لللل">
-<head>
-    <title>Products</title>
-</head>
-<body>
-    <h1>Sales store</h1>
-    <ul>
-</ul>
-
-</body>
-</html>
-
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>السوق</title>
+    <title>تطبيق تحويل النص إلى صوت 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* الأسلوب المشترك */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            direction: rtl;
-            margin: 0;
-            background-color: #f5f5f5;
-            padding: 0 0 60px;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            margin: 0;
-        }
-        footer {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        footer .footer-icons {
-            display: flex;
-            justify-content: space-around;
-        }
-        footer .footer-icons a {
-            text-decoration: none;
-        }
-        footer .footer-icons a button {
-            background-color: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
-            font-size: 16px;
-            font-weight: bold;
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-        }
-        footer .footer-icons a button img {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 5px;
-        }
-        footer .footer-icons a button:hover {
-            color: #ffcc00;
-        }
-
-        /* أسلوب الصفحة الأولى */
-        .header h2 {
-            margin: 0;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .form-group input[type="password"]::after {
-            content: "\f084";
-            font-family: 'Font Awesome 5 Free',serif;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ccc;
-            pointer-events: none;
-        }
-
-        /* أسلوب الصفحة الثانية */
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .search-bar input[type="text"] {
-            width: 70%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        .search-bar button {
-            padding: 10px 20px;
-            margin-left: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .ad-banner {
-            background-color: #187cff;
-            color: rgba(0, 119, 255, 0);
-            text-align: center;
             padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
-        .ad-banner h2 {
-            z-index: 1;
-            position: relative;
-            color: white;
-        }
-        .ad-banner p {
-            z-index: 1;
-            position: relative;
-            color: white;
-        }
-        .ad-banner .ad-images {
-            position: absolute;
+        .loading-screen {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background-color: #4a69bd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ffffff;
+            border-top: 5px solid #1e3799;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .app-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 70px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .app-header {
+            background-color: #4a69bd;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .flags {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            background-color: #f0f0f0;
+        }
+        .flag {
+            font-size: 24px;
+            margin: 0 10px;
+        }
+        .app-content {
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #4a69bd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #1e3799;
+            box-shadow: 0 0 10px rgba(74, 105, 189, 0.5);
+        }
+        button, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #4a69bd;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        button:hover, select:hover {
+            background-color: #1e3799;
+            transform: translateY(-2px);
+        }
+        button:active, select:active {
+            transform: translateY(1px);
+        }
+        .word-count {
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #4a69bd;
+        }
+        #audio-player {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .developer-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #4a69bd;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #4a69bd;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .bottom-nav button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            margin: 0;
+            padding: 10px;
+            width: auto;
+            box-shadow: none;
+        }
+        .bottom-nav button:hover {
+            background-color: #3a59ad;
+            transform: none;
+        }
+        .bottom-nav button.active {
+            color: #ffd700;
+        }
+        .premium-voice {
+            position: relative;
+            overflow: hidden;
+        }
+        .premium-voice::after {
+            content: 'قريباً';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #ffd700;
+            color: #4a69bd;
+            padding: 2px 5px;
+            font-size: 12px;
+            border-radius: 0 0 0 5px;
+        }
+        .share-button {
+            background-color: #4CAF50;
             display: flex;
             align-items: center;
-            justify-content: space-around;
-            animation: moveImages 10s linear infinite;
-        }
-        .ad-banner .ad-images img {
-            max-width: 20%;
-            border-radius: 10px;
-        }
-        @keyframes moveImages {
-            0% {
-                transform: translateX(100%);
-            }
-            50% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-        .categories {
-            display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
         }
-        .category {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 150px;
-            transition: transform 0.3s ease-in-out;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .share-button i {
+            margin-right: 10px;
         }
-        .category:hover {
-            transform: scale(1.05);
+        @media (max-width: 480px) {
+            .app-container {
+                border-radius: 0;
+            }
         }
-        .category img
-        {
-            max-width: 100%;
-            border-radius: 50%;
-        }
-        .category p {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #333;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>السوق</h1>
-    </header>
-    <div class="search-bar">
-        <label for="search-input"></label><input type="text" id="search-input" placeholder="ابحث في السوق المفتوح...">
-        <button onclick="search()">بحث</button>
+    <div class="loading-screen">
+        <div class="loading-spinner"></div>
     </div>
-    <div class="ad-banner">
-        <h2>أعلن هنا</h2>
-        <p>تواصل معنا</p>
-        <div class="ad-images">
-            <img src="c:/Users/Maryam%20DES/Downloads/iphone-15-PRO-gallery-colours.gif" alt="إعلان 1">
-            <img src="c:/Users/Maryam%20DES/Downloads/images%20(7).jpeg" alt="إعلان 2">
-            <img src="c:/Users/Maryam%20DES/Downloads/31b954506ce807c9c457624edd04207c.jpg" alt="إعلان 3">
-            <img src="c:/Users/Maryam%20DES/Downloads/wpKo69MZQrwKHEM6mhC3H9-1200-80.png" alt="إعلان 4">
+
+    <div class="app-container">
+        <div class="app-header">
+            تحويل النص إلى صوت 2025
         </div>
-    </div>
-    <div class="categories">
-        <div class="category">
-            <a href="vehicles.html">
-                <img src="https://png.pngtree.com/png-vector/20231208/ourlarge/pngtree-red-color-super-car-white-background-png-image_11087102.png" alt="سيارات">
-                <p>مركبات</p>
-            </a>
+        <div class="flags">
+            <span class="flag" title="سلطنة عُمان">🇴🇲</span>
+            <span class="flag" title="المملكة العربية السعودية">🇸🇦</span>
         </div>
-        <div class="category">
-            <a href="motorcycles.html">
-                <img src="img/pngtree-kawasaki-ninja-h2-transparent-background-png-image_13445782.png" alt="دراجات نارية">
-                <p>دراجات نارية</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="stores.html">
-                <img src="img/Properties.webp" alt="بيت">
-                <p>بيت</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="electronics.html">
-                <img src="img/Electronic.png" alt="إلكترونيات">
-                <p>إلكترونيات</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="laptops.html">
-                <img src="img/pngtree-straight-view-of-a-laptop-png-image_11440892.png" alt="لابتوب وكمبيوتر">
-                <p>لابتوب وكمبيوتر</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="stores.html">
-                <img src="https://opensooqui2.os-cdn.com/api/apiV/web/categories/Animals.webp" alt="حيوانات">
-                <p>بيت</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="electronics.html">
-                <img src="img/CFI-ZCT1W09X.webp" alt="العاب الفيديو">
-                <p>العاب الفيديو</p>
-            </a>
-        </div>
-        <div class="category">
-            <a href="laptops.html">
-                <img src="img/Real-Estate-Investment-PNG-Image.png" alt="عقارات للايجار">
-                <p>عقارات للايجار</p>
-            </a>
-        </div>
-        <!-- New Category -->
-        <div class="category">
-            <a href="other.html">
-                <img src="https://opensooqui2.os-cdn.com/api/apiV/web/categories/AllCategories.webp" alt="أقسام أخرى">
-                <p>أقسام أخرى</p>
-            </a>
+        <div class="app-content">
+            <textarea id="text-input" placeholder="أدخل النص هنا..." oninput="updateWordCount()"></textarea>
+            <div class="word-count">عدد الكلمات: <span id="word-count">0</span></div>
+            <select id="voice-select">
+                <option value="ar">عربي (مصر)</option>
+                <option value="ar-sa">عربي (السعودية)</option>
+                <option value="ar-ae">عربي (الإمارات)</option>
+                <option value="ar-ma">عربي (المغرب)</option>
+                <option value="ar-iq">عربي (العراق)</option>
+                <option value="premium-1" class="premium-voice">صوت مميز 1</option>
+                <option value="premium-2" class="premium-voice">صوت مميز 2</option>
+            </select>
+            <button onclick="convertToSpeech()" class="convert-button">تحويل إلى صوت</button>
+            <button onclick="downloadAudio()" id="download-btn" style="display: none;">تحميل الصوت</button>
+            <button onclick="shareAudio()" class="share-button"><i class="fas fa-share-alt"></i>مشاركة الصوت</button>
+            <audio id="audio-player" controls style="display: none;"></audio>
+            <div class="developer-info">
+                تم تطويرها من قبل وسام أحمد من مدرسة مسعود بن رمضان
+            </div>
         </div>
     </div>
-    <footer>
-        <div class="footer-icons">
-            <a href="الرئيسية.html"><button><img src="img/home.png" alt="الرئيسية">الرئيسية</button></a>
-            <a href="add-product.html"><button><img src="img/plus (1).png" alt="إضافة منتج جديد">إضافة منتج جديد</button></a>
-            <a href="my-ads.html"><button><img src="img/marketing.png" alt="إعلاناتي">إعلاناتي</button></a>
-            <a href="حسابي.html"><button><img src="img/user.png" alt="حسابي">حسابي</button></a>
-            <a href="opan WA.html"><button><img src="img/chat-bubbles-with-ellipsis.png" alt="دردشاتي">دردشاتي</button></a>
-        </div>
-    </footer>
+
+    <nav class="bottom-nav">
+        <button onclick="setActive(this)" id="home-btn"><i class="fas fa-home"></i></button>
+        <button onclick="setActive(this)" id="settings-btn"><i class="fas fa-cog"></i></button>
+        <button onclick="setActive(this)" id="account-btn"><i class="fas fa-user"></i></button>
+        <button onclick="setActive(this)" id="notifications-btn"><i class="fas fa-bell"></i></button>
+    </nav>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    document.querySelector('.app-container').style.opacity = '1';
+                    document.querySelector('.app-container').style.transform = 'translateY(0)';
+                }, 500);
+            }, 2000);
+        });
+
+        function updateWordCount() {
+            let text = document.getElementById('text-input').value;
+            let wordCount = text.trim().split(/\s+/).length;
+            document.getElementById('word-count').textContent = wordCount;
+        }
+
+        function convertToSpeech() {
+            let text = document.getElementById('text-input').value;
+            if (text.trim() === '') {
+                alert('الرجاء إدخال نص للتحويل إلى صوت.');
+                return;
+            }
+
+            let voice = document.getElementById('voice-select').value;
+            if (voice.startsWith('premium')) {
+                alert('هذا الصوت المميز سيكون متاحًا قريبًا!');
+                return;
+            }
+
+            let apiUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${voice}&client=tw-ob`;
+
+            let audioPlayer = document.getElementById('audio-player');
+            audioPlayer.src = apiUrl;
+            audioPlayer.style.display = 'block';
+            audioPlayer.play();
+
+            document.getElementById('download-btn').style.display = 'block';
+
+            // إضافة حركة نبض للزر عند التحويل
+            let convertButton = document.querySelector('.convert-button');
+            convertButton.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                convertButton.style.animation = 'none';
+            }, 500);
+        }
+
+        function downloadAudio() {
+            let audioSrc = document.getElementById('audio-player').src;
+            let link = document.createElement('a');
+            link.href = audioSrc;
+            link.download = 'audio.mp3';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function shareAudio() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'مشاركة الصوت',
+                    text: 'استمع إلى هذا الصوت الرائع!',
+                    url: document.getElementById('audio-player').src
+                }).then(() => {
+                    console.log('تمت المشاركة بنجاح');
+                }).catch((error) => {
+                    console.log('حدث خطأ أثناء المشاركة', error);
+                });
+            } else {
+                alert('عذرًا، ميزة المشاركة غير متوفرة في متصفحك. يرجى نسخ الرابط يدويًا.');
+            }
+        }
+
+        // إضافة حركات للأزرار
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('mousedown', () => button.style.transform = 'scale(0.95)');
+            button.addEventListener('mouseup', () => button.style.transform = 'scale(1)');
+        });
+
+        // تفعيل الزر المحدد في الشريط السفلي
+        function setActive(btn) {
+            document.querySelectorAll('.bottom-nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            btn.classList.add('active');
+        }
+
+        // تعيين الزر الرئيسي كنشط افتراضيًا
+        document.getElementById('home-btn').classList.add('active');
+    </script>
 </body>
 </html>
