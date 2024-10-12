@@ -3,188 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق تحويل النص إلى صوت 2050</title>
+    <title>يوتيوب شير - شارك فيديوهاتك المفضلة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --text-color: #ffffff;
-            --bg-color: #000000;
+            --primary-color: #ff4500;
+            --secondary-color: #1e90ff;
+            --background-color: #f9f9f9;
+            --text-color: #333;
         }
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background-color: var(--background-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            padding: 0;
+            direction: rtl;
         }
         .container {
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 600px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
         }
         h1 {
-            color: var(--text-color);
-            text-align: center;
-            margin-bottom: 30px;
+            margin: 0;
             font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        textarea {
-            width: 100%;
-            height: 150px;
-            margin-bottom: 20px;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            resize: vertical;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-color);
+        .auth-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
         }
-        select, button {
-            width: 100%;
-            padding: 15px;
+        .auth-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 48%;
+        }
+        .auth-form h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        .form-group {
             margin-bottom: 15px;
-            border: none;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-color);
-            font-size: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
         button {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background-color: #1c7cd6;
         }
-        #audio-player {
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 10px;
+        #videoForm {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        .feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
+        #videoList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        .feature i {
-            margin-left: 15px;
-            color: var(--secondary-color);
-            font-size: 1.5em;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-        #download-btn, #share-btn {
-            display: none;
-        }
-        #download-btn {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-        }
-        #share-btn {
-            background: linear-gradient(45deg, #fc4a1a, #f7b733);
-        }
-        .hologram {
-            position: relative;
+        .video-item {
+            background-color: white;
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
-        .hologram::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(45deg);
-            animation: hologram 20s linear infinite;
+        .video-item:hover {
+            transform: translateY(-5px);
         }
-        @keyframes hologram {
-            0% {
-                transform: rotate(45deg) translateY(-100%);
+        .video-item iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+        .video-info {
+            padding: 15px;
+        }
+        .video-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .user-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .likes {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #userInfo {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
             }
-            100% {
-                transform: rotate(45deg) translateY(100%);
+            .auth-form {
+                width: 100%;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container hologram">
-        <h1 class="floating">تحويل النص إلى صوت 2050</h1>
-        <div class="feature">
-            <i class="fas fa-brain"></i>
-            <span>ذكاء اصطناعي متقدم للتعرف على السياق</span>
+    <header>
+        <h1>يوتيوب شير</h1>
+        <p>شارك فيديوهاتك المفضلة مع العالم</p>
+    </header>
+
+    <div class="container">
+        <div id="userInfo"></div>
+
+        <div class="auth-container">
+            <div class="auth-form" id="registerForm">
+                <h2>إنشاء حساب جديد</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="regName">الاسم</label>
+                        <input type="text" id="regName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">البريد الإلكتروني</label>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">كلمة المرور</label>
+                        <input type="password" id="regPassword" required>
+                    </div>
+                    <button type="submit">إنشاء حساب</button>
+                </form>
+            </div>
+
+            <div class="auth-form" id="loginForm">
+                <h2>تسجيل الدخول</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit">تسجيل الدخول</button>
+                </form>
+            </div>
         </div>
-        <div class="feature">
-            <i class="fas fa-volume-up"></i>
-            <span>أصوات واقعية بتقنية النانو</span>
+
+        <div id="videoForm" style="display:none;">
+            <h2>شارك فيديو جديد</h2>
+            <form id="videoFormElement">
+                <div class="form-group">
+                    <label for="videoUrl">رابط فيديو يوتيوب</label>
+                    <input type="text" id="videoUrl" placeholder="أدخل رابط فيديو يوتيوب" required>
+                </div>
+                <button type="submit">شارك الفيديو</button>
+            </form>
         </div>
-        <div class="feature">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>تحويل فوري بسرعة الضوء</span>
-        </div>
-        <textarea id="text-input" placeholder="أدخل النص هنا... يمكنك الآن إدخال نصوص طويلة وسيتم تحليلها بذكاء"></textarea>
-        <select id="voice-select">
-            <option value="ar">العربية (مجاني)</option>
-            <option value="en">الإنجليزية (مجاني)</option>
-            <option value="ai-ar">العربية بالذكاء الاصطناعي (مدفوع)</option>
-            <option value="ai-en">الإنجليزية بالذكاء الاصطناعي (مدفوع)</option>
-            <option value="custom">صوتك الخاص (مدفوع)</option>
-        </select>
-        <button onclick="convertToSpeech()" class="convert-button">تحويل إلى صوت</button>
-        <audio id="audio-player" controls style="display: none;"></audio>
-        <button id="download-btn" onclick="downloadAudio()">تحميل الصوت</button>
-        <button id="share-btn" onclick="shareAudio()">نشر الصوت</button>
+        
+        <div id="videoList"></div>
     </div>
 
     <script>
-        function convertToSpeech() {
-            // محاكاة عملية التحويل
-            setTimeout(() => {
-                document.getElementById('audio-player').style.display = 'block';
-                document.getElementById('download-btn').style.display = 'block';
-                document.getElementById('share-btn').style.display = 'block';
-            }, 2000);
+        let currentUser = null;
+        const users = [];
+        const videos = [];
+
+        const userInfo = document.getElementById('userInfo');
+        const registerForm = document.getElementById('registerFormElement');
+        const loginForm = document.getElementById('loginFormElement');
+        const videoForm = document.getElementById('videoForm');
+        const videoFormElement = document.getElementById('videoFormElement');
+        const videoList = document.getElementById('videoList');
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if (users.some(user => user.email === email)) {
+                alert('هذا البريد الإلكتروني مستخدم بالفعل');
+                return;
+            }
+
+            const newUser = { name, email, password };
+            users.push(newUser);
+            alert('تم إنشاء الحساب بنجاح');
+            loginUser(newUser);
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                loginUser(user);
+            } else {
+                alert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+            }
+        });
+
+        videoFormElement.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const url = document.getElementById('videoUrl').value;
+            const videoId = getYouTubeVideoId(url);
+            if (videoId) {
+                const newVideo = {
+                    id: Date.now(),
+                    url: url,
+                    userId: currentUser.email,
+                    userName: currentUser.name,
+                    timestamp: new Date(),
+                    likes: 0
+                };
+                videos.push(newVideo);
+                document.getElementById('videoUrl').value = '';
+                renderVideos();
+            } else {
+                alert('الرجاء إدخال رابط فيديو يوتيوب صالح');
+            }
+        });
+
+        function loginUser(user) {
+            currentUser = user;
+            document.querySelector('.auth-container').style.display = 'none';
+            videoForm.style.display = 'block';
+            userInfo.innerHTML = `مرحبًا ${user.name}! <button onclick="logout()">تسجيل الخروج</button>`;
+            renderVideos();
         }
 
-        function downloadAudio() {
-            alert('جاري تحميل الصوت... تم التحميل بنجاح!');
+        function logout() {
+            currentUser = null;
+            document.querySelector('.auth-container').style.display = 'flex';
+            videoForm.style.display = 'none';
+            userInfo.innerHTML = '';
+            renderVideos();
         }
 
-        function shareAudio() {
-            let shareOptions = ['WhatsApp', 'Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'Email'];
-            let selectedOption = shareOptions[Math.floor(Math.random() * shareOptions.length)];
-            alert(`تم نشر الصوت على ${selectedOption} بنجاح!`);
+        function renderVideos() {
+            videoList.innerHTML = '';
+            videos.sort((a, b) => b.timestamp - a.timestamp).forEach(video => {
+                const videoId = getYouTubeVideoId(video.url);
+                const videoElement = document.createElement('div');
+                videoElement.className = 'video-item';
+                videoElement.innerHTML = `
+                    <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                    <div class="video-info">
+                        <h3>${getVideoTitle(videoId)}</h3>
+                        <div class="user-info">شاركه ${video.userName}</div>
+                        <div class="likes" onclick="likeVideo(${video.id})">
+                            ❤️ ${video.likes} إعجاب
+                        </div>
+                    </div>
+                `;
+                videoList.appendChild(videoElement);
+            });
+        }
+
+        function getYouTubeVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function likeVideo(id) {
+            if (!currentUser) {
+                alert('يجب تسجيل الدخول لإضافة إعجاب');
+                return;
+            }
+            const video = videos.find(v => v.id === id);
+            if (video) {
+                video.likes++;
+                renderVideos();
+            }
+        }
+
+        function getVideoTitle(videoId) {
+            // في الواقع، يجب استخدام YouTube Data API للحصول على عنوان الفيديو
+            // هنا نستخدم عنوانًا افتراضيًا للتوضيح
+            return `فيديو ${videoId}`;
         }
     </script>
 </body>
