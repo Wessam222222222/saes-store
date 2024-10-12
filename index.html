@@ -1,378 +1,529 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>يوتيوب شير - شارك فيديوهاتك المفضلة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <title>FutureNote Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #ff4500;
-            --secondary-color: #1e90ff;
-            --background-color: #f9f9f9;
-            --text-color: #333;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
             margin: 0;
             padding: 0;
-            direction: rtl;
+            background-color: #1a1a2e;
+            color: #ffffff;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-        .auth-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        .auth-form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 48%;
-        }
-        .auth-form h2 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #1c7cd6;
-        }
-        #videoForm {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        #videoList {
+        .note-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
         }
-        .video-item {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        .video-item:hover {
-            transform: translateY(-5px);
-        }
-        .video-item iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
-        }
-        .video-info {
+        .note-card {
+            background-color: #16213e;
+            border-radius: 10px;
             padding: 15px;
-        }
-        .video-info h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        .user-info {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .likes {
-            color: var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             cursor: pointer;
-            font-weight: bold;
+            position: relative;
+            overflow: hidden;
         }
-        #userInfo {
-            text-align: left;
+        .note-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+        .note-card:hover::before {
+            left: 100%;
+        }
+        .note-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .note-content {
+            font-size: 14px;
+            color: #aaa;
+        }
+        .add-note {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #0f3460;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .add-note:hover {
+            background-color: #e94560;
+            transform: rotate(90deg) scale(1.1);
+        }
+        .editor {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a2e;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
-        @media (max-width: 768px) {
-            .auth-container {
-                flex-direction: column;
-            }
-            .auth-form {
-                width: 100%;
-                margin-bottom: 20px;
-            }
+        .editor-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .close-editor {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .close-editor:hover {
+            transform: rotate(90deg);
+        }
+        .editor-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 60px);
+        }
+        #noteTitle, #noteContent {
+            background-color: #16213e;
+            border: none;
+            color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        #noteTitle:focus, #noteContent:focus {
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+        #noteTitle {
+            font-size: 20px;
+        }
+        #noteContent {
+            flex-grow: 1;
+            resize: none;
+            font-size: 16px;
+        }
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .toolbar-btn {
+            background-color: #0f3460;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .toolbar-btn:hover {
+            background-color: #e94560;
+            transform: translateY(-2px);
+        }
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #16213e;
+            border: none;
+            color: #ffffff;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        #searchInput:focus {
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+        .date-picker {
+            background-color: #16213e;
+            border: none;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #canvas {
+            border: 1px solid #ffffff;
+            cursor: crosshair;
+        }
+        .about-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #0f3460;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .about-btn:hover {
+            background-color: #e94560;
+            transform: rotate(-90deg) scale(1.1);
+        }
+        .about-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-content {
+            background-color: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            text-align: center;
+        }
+        .about-content h2 {
+            color: #e94560;
+        }
+        .close-about {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>يوتيوب شير</h1>
-        <p>شارك فيديوهاتك المفضلة مع العالم</p>
-    </header>
-
     <div class="container">
-        <div id="userInfo"></div>
+        <h1>FutureNote Pro</h1>
+        <input type="text" id="searchInput" placeholder="Search notes...">
+        <div class="note-list" id="noteList"></div>
+        <div class="add-note" id="addNoteBtn"><i class="fas fa-plus"></i></div>
+        <div class="about-btn" id="aboutBtn"><i class="fas fa-info"></i></div>
+    </div>
 
-        <div class="auth-container">
-            <div class="auth-form" id="registerForm">
-                <h2>إنشاء حساب جديد</h2>
-                <form id="registerFormElement">
-                    <div class="form-group">
-                        <label for="regName">الاسم</label>
-                        <input type="text" id="regName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="regEmail">البريد الإلكتروني</label>
-                        <input type="email" id="regEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="regPassword">كلمة المرور</label>
-                        <input type="password" id="regPassword" required>
-                    </div>
-                    <button type="submit">إنشاء حساب</button>
-                </form>
-            </div>
-
-            <div class="auth-form" id="loginForm">
-                <h2>تسجيل الدخول</h2>
-                <form id="loginFormElement">
-                    <div class="form-group">
-                        <label for="loginEmail">البريد الإلكتروني</label>
-                        <input type="email" id="loginEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">كلمة المرور</label>
-                        <input type="password" id="loginPassword" required>
-                    </div>
-                    <button type="submit">تسجيل الدخول</button>
-                </form>
-            </div>
+    <div class="editor" id="editor">
+        <div class="editor-header">
+            <div class="editor-title">Edit Note</div>
+            <div class="close-editor" id="closeEditor">&times;</div>
         </div>
-
-        <div id="videoForm" style="display:none;">
-            <h2>شارك فيديو جديد</h2>
-            <form id="videoFormElement">
-                <div class="form-group">
-                    <label for="videoUrl">رابط فيديو يوتيوب</label>
-                    <input type="text" id="videoUrl" placeholder="أدخل رابط فيديو يوتيوب" required>
-                </div>
-                <button type="submit">شارك الفيديو</button>
-            </form>
+        <div class="editor-content">
+            <input type="text" id="noteTitle" placeholder="Note Title">
+            <textarea id="noteContent" placeholder="Write your note here..."></textarea>
+            <div class="editor-toolbar">
+                <button class="toolbar-btn" id="addImage"><i class="fas fa-image"></i> Add Image</button>
+                <button class="toolbar-btn" id="addVideo"><i class="fas fa-video"></i> Add Video</button>
+                <button class="toolbar-btn" id="setTimer"><i class="fas fa-clock"></i> Set Timer</button>
+                <button class="toolbar-btn" id="setDate"><i class="fas fa-calendar-alt"></i> Set Date</button>
+                <button class="toolbar-btn" id="addEmoji"><i class="fas fa-smile"></i> Add Emoji</button>
+                <button class="toolbar-btn" id="toggleDraw"><i class="fas fa-pencil-alt"></i> Draw</button>
+                <button class="toolbar-btn" id="setAlarm"><i class="fas fa-bell"></i> Set Alarm</button>
+                <button class="toolbar-btn" id="saveNote"><i class="fas fa-save"></i> Save Note</button>
+            </div>
+            <canvas id="canvas" width="800" height="400" style="display: none;"></canvas>
         </div>
-        
-        <div id="videoList"></div>
+    </div>
+
+    <div class="about-modal" id="aboutModal">
+        <div class="about-content fade-in">
+            <h2>About FutureNote Pro</h2>
+            <p>Developed by: Wissam Ahmed</p>
+            <p>Year: 2024</p>
+            <p>FutureNote Pro is a cutting-edge note-taking application designed to enhance your productivity and creativity. With features like image and video embedding, drawing tools, date scheduling, and more, FutureNote Pro is your all-in-one solution for capturing and organizing your thoughts and ideas.</p>
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Rich text editing</li>
+                <li>Image and video embedding</li>
+                <li>Drawing tools</li>
+                <li>Date scheduling</li>
+                <li>Emoji support</li>
+                <li>Alarm and timer functionality</li>
+                <li>Sleek, modern interface</li>
+            </ul>
+            <p>Experience the future of note-taking with FutureNote Pro!</p>
+        </div>
+        <div class="close-about" id="closeAbout">&times;</div>
     </div>
 
     <script>
-        // تكوين Firebase
-        const firebaseConfig = {
-            // أدخل تكوين Firebase الخاص بك هنا
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+        const noteList = document.getElementById('noteList');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        const editor = document.getElementById('editor');
+        const closeEditor = document.getElementById('closeEditor');
+        const noteTitle = document.getElementById('noteTitle');
+        const noteContent = document.getElementById('noteContent');
+        const saveNote = document.getElementById('saveNote');
+        const searchInput = document.getElementById('searchInput');
+        const addImage = document.getElementById('addImage');
+        const addVideo = document.getElementById('addVideo');
+        const setTimer = document.getElementById('setTimer');
+        const setDate = document.getElementById('setDate');
+        const addEmoji = document.getElementById('addEmoji');
+        const toggleDraw = document.getElementById('toggleDraw');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const setAlarm = document.getElementById('setAlarm');
+        const aboutBtn = document.getElementById('aboutBtn');
+        const aboutModal = document.getElementById('aboutModal');
+        const closeAbout = document.getElementById('closeAbout');
+
+        let notes = JSON.parse(localStorage.getItem('notes')) || [];
+        let currentNoteIndex = -1;
+        let isDrawing = false;
+
+        function renderNotes() {
+            noteList.innerHTML = '';
+            notes.forEach((note, index) => {
+                const noteCard = document.createElement('div');
+                noteCard.className = 'note-card fade-in';
+                noteCard.innerHTML = `
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>
+                `;
+                noteCard.onclick = () => openEditor(index);
+                noteList.appendChild(noteCard);
+            });
+        }
+
+        function openEditor(index = -1) {
+            currentNoteIndex = index;
+            if (index >= 0) {
+                noteTitle.value = notes[index].title;
+                noteContent.value = notes[index].content;
+            } else {
+                noteTitle.value = '';
+                noteContent.value = '';
+            }
+            editor.style.display = 'block';
+            canvas.style.display = 'none';
+        }
+
+        function closeEditorFunc() {
+            editor.style.display = 'none';
+            currentNoteIndex = -1;
+        }
+
+        function saveNoteFunc() {
+            const title = noteTitle.value.trim();
+            const content = noteContent.value.trim();
+            if (title && content) {
+                if (currentNoteIndex >= 0) {
+                    notes[currentNoteIndex] = { title, content };
+                } else {
+                    notes.push({ title, content });
+                }
+                localStorage.setItem('notes', JSON.stringify(notes));
+                renderNotes();
+                closeEditorFunc();
+            }
+        }
+
+        function searchNotes() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredNotes = notes.filter(note => 
+                note.title.toLowerCase().includes(searchTerm) || 
+                note.content.toLowerCase().includes(searchTerm)
+            );
+            renderFilteredNotes(filteredNotes);
+        }
+
+        function renderFilteredNotes(filteredNotes) {
+            noteList.innerHTML = '';
+            filteredNotes.forEach((note, index) => {
+                const noteCard = document.createElement('div');
+                noteCard.className = 'note-card fade-in';
+                noteCard.innerHTML = `
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-content">${note.content.substring(0, 100)}${note.content.length > 100 ? '...' : ''}</div>
+                `;
+                noteCard.onclick = () => openEditor(notes.indexOf(note));
+                noteList.appendChild(noteCard);
+            });
+        }
+
+        function addMedia(type) {
+            const source = prompt(`Choose source for ${type}:\n1. URL\n2. Device\nEnter 1 or 2:`);
+            if (source === '1') {
+                const url = prompt(`Enter ${type} URL:`);
+                if (url) {
+                    const position = prompt(`Where to add the ${type}?\n1. Top\n2. Bottom\n3. Cursor position\nEnter 1, 2, or 3:`);
+                    const tag = type === 'image' ? `<img src="${url}" style="max-width:100%;">` : `<video src="${url}" controls style="max-width:100%;"></video>`;
+                    insertContent(tag, position);
+                }
+            } else if (source === '2') {
+                alert(`To add a ${type} from your device, you would typically use a file input. For this example, we'll simulate it with a placeholder.`);
+                const placeholder = `[${type.toUpperCase()} FROM DEVICE]`;
+                const position = prompt(`Where to add the ${type}?\n1. Top\n2. Bottom\n3. Cursor position\nEnter 1, 2, or 3:`);
+                insertContent(placeholder, position);
+            }
+        }
+
+        function insertContent(content, position) {
+            const cursorPos = noteContent.selectionStart;
+            const currentContent = noteContent.value;
+            let newContent;
+            switch(position) {
+                case '1':
+                    newContent = content + '\n\n' + currentContent;
+                    break;
+                case '2':
+                    newContent = currentContent + '\n\n' + content;
+                    break;
+                case '3':
+                default:
+                    newContent = currentContent.slice(0, cursorPos) + content + currentContent.slice(cursorPos);
+                    break;
+            }
+            noteContent.value = newContent;
+        }
+
+        addImage.onclick = () => addMedia('image');
+        addVideo.onclick = () => addMedia('video');
+
+        setTimer.onclick = () => {
+            const time = prompt("Enter time (e.g., 5m for 5 minutes, 2h for 2 hours):");
+            if (time) {
+                insertContent(`[TIMER: ${time}]`, '3');
+            }
         };
 
-        // تهيئة Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        const userInfo = document.getElementById('userInfo');
-        const registerForm = document.getElementById('registerFormElement');
-        const loginForm = document.getElementById('loginFormElement');
-        const videoForm = document.getElementById('videoForm');
-        const videoFormElement = document.getElementById('videoFormElement');
-        const videoList = document.getElementById('videoList');
-
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    return db.collection('users').doc(user.uid).set({
-                        name: name,
-                        email: email
-                    });
-                })
-                .then(() => {
-                    alert('تم إنشاء الحساب بنجاح');
-                    loginUser();
-                })
-                .catch((error) => {
-                    alert(`خطأ في إنشاء الحساب: ${error.message}`);
-                });
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    loginUser();
-                })
-                .catch((error) => {
-                    alert(`خطأ في تسجيل الدخول: ${error.message}`);
-                });
-        });
-
-        videoFormElement.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const url = document.getElementById('videoUrl').value;
-            const videoId = getYouTubeVideoId(url);
-            if (videoId) {
-                db.collection('videos').add({
-                    url: url,
-                    userId: auth.currentUser.uid,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    likes: 0
-                })
-                .then(() => {
-                    document.getElementById('videoUrl').value = '';
-                    renderVideos();
-                })
-                .catch((error) => {
-                    alert(`خطأ في مشاركة الفيديو: ${error.message}`);
-                });
-            } else {
-                alert('الرجاء إدخال رابط فيديو يوتيوب صالح');
+        setDate.onclick = () => {
+            const date = prompt("Enter date (YYYY-MM-DD):");
+            if (date) {
+                insertContent(`[DATE: ${date}]`, '3');
             }
-        });
+        };
 
-        function loginUser() {
-            document.querySelector('.auth-container').style.display = 'none';
-            videoForm.style.display = 'block';
-            db.collection('users').doc(auth.currentUser.uid).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        userInfo.innerHTML = `مرحبًا ${doc.data().name}! <button onclick="logout()">تسجيل الخروج</button>`;
-                    }
-                });
-            renderVideos();
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                document.querySelector('.auth-container').style.display = 'flex';
-                videoForm.style.display = 'none';
-                userInfo.innerHTML = '';
-                videoList.innerHTML = '';
-            }).catch((error) => {
-                console.error('خطأ في تسجيل الخروج:', error);
-            });
-        }
-
-        function renderVideos() {
-            videoList.innerHTML = '';
-            db.collection('videos')
-                .where('userId', '==', auth.currentUser.uid)
-                .orderBy('timestamp', 'desc')
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        const video = doc.data();
-                        const videoId = getYouTubeVideoId(video.url);
-                        const videoElement = document.createElement('div');
-                        videoElement.className = 'video-item';
-                        videoElement.innerHTML = `
-                            <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
-                            <div class="video-info">
-                                <h3>${getVideoTitle(videoId)}</h3>
-                                <div class="likes" onclick="likeVideo('${doc.id}')">
-                                    ❤️ ${video.likes} إعجاب
-                                </div>
-                            </div>
-                        `;
-                        videoList.appendChild(videoElement);
-                    });
-                })
-                .catch((error) => {
-                    console.error("خطأ في جلب الفيديوهات: ", error);
-                });
-        }
-
-        function getYouTubeVideoId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        function likeVideo(videoId) {
-            db.collection('videos').doc(videoId).update({
-                likes: firebase.firestore.FieldValue.increment(1)
-            })
-            .then(() => {
-                renderVideos();
-            })
-            .catch((error) => {
-                console.error("خطأ في تحديث الإعجابات: ", error);
-            });
-        }
-
-        function getVideoTitle(videoId) {
-            // في الواقع، يجب استخدام YouTube Data API للحصول على عنوان الفيديو
-            // هنا نستخدم عنوانًا افتراضيًا للتوضيح
-            return `فيديو ${videoId}`;
-        }
-
-        // استمع لتغييرات حالة المصادقة
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                loginUser();
-            } else {
-                document.querySelector('.auth-container').style.display = 'flex';
-                videoForm.style.display = 'none';
-                userInfo.innerHTML = '';
-                videoList.innerHTML = '';
+        addEmoji.onclick = () => {
+            const emoji = prompt("Enter an emoji:");
+            if (emoji) {
+                insertContent(emoji, '3');
             }
-        });
+        };
+
+        toggleDraw.onclick = () => {
+            if (canvas.style.display === 'none') {
+                canvas.style.display = 'block';
+                noteContent.style.display = 'none';
+            } else {
+                canvas.style.display = 'none';
+                noteContent.style.display = 'block';
+                const dataURL = canvas.toDataURL();
+                insertContent(`<img src="${dataURL}" style="max-width:100%;">`, '3');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        };
+
+        canvas.onmousedown = (e) => {
+            isDrawing = true;
+            draw(e);
+        };
+
+        canvas.onmousemove = (e) => {
+            if (isDrawing) {
+                draw(e);
+            }
+        };
+
+        canvas.onmouseup = () => {
+            isDrawing = false;
+            ctx.beginPath();
+        };
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#ffffff';
+
+            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        }
+
+        setAlarm.onclick = () => {
+            const time = prompt("Enter alarm time (HH:MM):");
+            if (time) {
+                insertContent(`[ALARM: ${time}]`, '3');
+            }
+        };
+
+        aboutBtn.onclick = () => {
+            aboutModal.style.display = 'flex';
+        };
+
+        closeAbout.onclick = () => {
+            aboutModal.style.display = 'none';
+        };
+
+        renderNotes();
+
+        addNoteBtn.onclick = () => openEditor();
+        closeEditor.onclick = closeEditorFunc;
+        saveNote.onclick = saveNoteFunc;
+        searchInput.addEventListener('input', searchNotes);
+
+        // Close modal when clicking outside
+        window.onclick = (event) => {
+            if (event.target === aboutModal) {
+                aboutModal.style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>
