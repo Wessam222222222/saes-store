@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>يوتيوب شير - شارك فيديوهاتك المفضلة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
         :root {
             --primary-color: #ff4500;
@@ -200,9 +203,21 @@
     </div>
 
     <script>
-        let currentUser = null;
-        const users = [];
-        const videos = [];
+        // تكوين Firebase
+        const firebaseConfig = {
+            // أدخل تكوين Firebase الخاص بك هنا
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // تهيئة Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         const userInfo = document.getElementById('userInfo');
         const registerForm = document.getElementById('registerFormElement');
@@ -217,15 +232,21 @@
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
             
-            if (users.some(user => user.email === email)) {
-                alert('هذا البريد الإلكتروني مستخدم بالفعل');
-                return;
-            }
-
-            const newUser = { name, email, password };
-            users.push(newUser);
-            alert('تم إنشاء الحساب بنجاح');
-            loginUser(newUser);
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection('users').doc(user.uid).set({
+                        name: name,
+                        email: email
+                    });
+                })
+                .then(() => {
+                    alert('تم إنشاء الحساب بنجاح');
+                    loginUser();
+                })
+                .catch((error) => {
+                    alert(`خطأ في إنشاء الحساب: ${error.message}`);
+                });
         });
 
         loginForm.addEventListener('submit', (e) => {
@@ -233,12 +254,13 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            const user = users.find(u => u.email === email && u.password === password);
-            if (user) {
-                loginUser(user);
-            } else {
-                alert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
-            }
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    loginUser();
+                })
+                .catch((error) => {
+                    alert(`خطأ في تسجيل الدخول: ${error.message}`);
+                });
         });
 
         videoFormElement.addEventListener('submit', (e) => {
@@ -246,56 +268,74 @@
             const url = document.getElementById('videoUrl').value;
             const videoId = getYouTubeVideoId(url);
             if (videoId) {
-                const newVideo = {
-                    id: Date.now(),
+                db.collection('videos').add({
                     url: url,
-                    userId: currentUser.email,
-                    userName: currentUser.name,
-                    timestamp: new Date(),
+                    userId: auth.currentUser.uid,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     likes: 0
-                };
-                videos.push(newVideo);
-                document.getElementById('videoUrl').value = '';
-                renderVideos();
+                })
+                .then(() => {
+                    document.getElementById('videoUrl').value = '';
+                    renderVideos();
+                })
+                .catch((error) => {
+                    alert(`خطأ في مشاركة الفيديو: ${error.message}`);
+                });
             } else {
                 alert('الرجاء إدخال رابط فيديو يوتيوب صالح');
             }
         });
 
-        function loginUser(user) {
-            currentUser = user;
+        function loginUser() {
             document.querySelector('.auth-container').style.display = 'none';
             videoForm.style.display = 'block';
-            userInfo.innerHTML = `مرحبًا ${user.name}! <button onclick="logout()">تسجيل الخروج</button>`;
+            db.collection('users').doc(auth.currentUser.uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        userInfo.innerHTML = `مرحبًا ${doc.data().name}! <button onclick="logout()">تسجيل الخروج</button>`;
+                    }
+                });
             renderVideos();
         }
 
         function logout() {
-            currentUser = null;
-            document.querySelector('.auth-container').style.display = 'flex';
-            videoForm.style.display = 'none';
-            userInfo.innerHTML = '';
-            renderVideos();
+            auth.signOut().then(() => {
+                document.querySelector('.auth-container').style.display = 'flex';
+                videoForm.style.display = 'none';
+                userInfo.innerHTML = '';
+                videoList.innerHTML = '';
+            }).catch((error) => {
+                console.error('خطأ في تسجيل الخروج:', error);
+            });
         }
 
         function renderVideos() {
             videoList.innerHTML = '';
-            videos.sort((a, b) => b.timestamp - a.timestamp).forEach(video => {
-                const videoId = getYouTubeVideoId(video.url);
-                const videoElement = document.createElement('div');
-                videoElement.className = 'video-item';
-                videoElement.innerHTML = `
-                    <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
-                    <div class="video-info">
-                        <h3>${getVideoTitle(videoId)}</h3>
-                        <div class="user-info">شاركه ${video.userName}</div>
-                        <div class="likes" onclick="likeVideo(${video.id})">
-                            ❤️ ${video.likes} إعجاب
-                        </div>
-                    </div>
-                `;
-                videoList.appendChild(videoElement);
-            });
+            db.collection('videos')
+                .where('userId', '==', auth.currentUser.uid)
+                .orderBy('timestamp', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const video = doc.data();
+                        const videoId = getYouTubeVideoId(video.url);
+                        const videoElement = document.createElement('div');
+                        videoElement.className = 'video-item';
+                        videoElement.innerHTML = `
+                            <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+                            <div class="video-info">
+                                <h3>${getVideoTitle(videoId)}</h3>
+                                <div class="likes" onclick="likeVideo('${doc.id}')">
+                                    ❤️ ${video.likes} إعجاب
+                                </div>
+                            </div>
+                        `;
+                        videoList.appendChild(videoElement);
+                    });
+                })
+                .catch((error) => {
+                    console.error("خطأ في جلب الفيديوهات: ", error);
+                });
         }
 
         function getYouTubeVideoId(url) {
@@ -304,16 +344,16 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        function likeVideo(id) {
-            if (!currentUser) {
-                alert('يجب تسجيل الدخول لإضافة إعجاب');
-                return;
-            }
-            const video = videos.find(v => v.id === id);
-            if (video) {
-                video.likes++;
+        function likeVideo(videoId) {
+            db.collection('videos').doc(videoId).update({
+                likes: firebase.firestore.FieldValue.increment(1)
+            })
+            .then(() => {
                 renderVideos();
-            }
+            })
+            .catch((error) => {
+                console.error("خطأ في تحديث الإعجابات: ", error);
+            });
         }
 
         function getVideoTitle(videoId) {
@@ -321,6 +361,18 @@
             // هنا نستخدم عنوانًا افتراضيًا للتوضيح
             return `فيديو ${videoId}`;
         }
+
+        // استمع لتغييرات حالة المصادقة
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loginUser();
+            } else {
+                document.querySelector('.auth-container').style.display = 'flex';
+                videoForm.style.display = 'none';
+                userInfo.innerHTML = '';
+                videoList.innerHTML = '';
+            }
+        });
     </script>
 </body>
 </html>
