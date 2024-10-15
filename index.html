@@ -68,9 +68,11 @@
             padding: 30px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .content::before {
@@ -99,13 +101,9 @@
             text-align: center;
             margin-top: 30px;
             font-style: italic;
-            opacity: 0.7;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 0.7; transform: translateY(0); }
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .button-container {
@@ -123,16 +121,18 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         button:hover {
             background-color: var(--secondary-color);
+            transform: scale(1.05);
         }
 
         #video, #audio {
             width: 100%;
             margin-top: 20px;
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -152,8 +152,8 @@
         <div class="button-container">
             <button onclick="copyText()">Copy Text</button>
             <button onclick="translatePage()">Translate to Arabic</button>
-            <button onclick="downloadAudio()">Download Audio</button>
-            <button onclick="playVideo()">Play Video</button>
+            <button onclick="toggleAudio()">Play/Pause Audio</button>
+            <button onclick="toggleVideo()">Play/Pause Video</button>
         </div>
 
         <div class="content">
@@ -188,13 +188,13 @@
             </p>
         </div>
 
-        <audio id="audio" controls style="display:none;">
-            <source src="" type="audio/mpeg">
+        <audio id="audio" controls>
+            <source src="https://s142.convertio.me/p/aAnqhhJgdpJyg5WzsxEqGw/a9a1c4cbe913ad7e015e89d1266fbc26/Text_to_Speech.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
         
-        <video id="video" controls style="display:none;">
-            <source src="" type="video/mp4">
+        <video id="video" controls>
+            <source src="https://files.fm/f/dxyccf4u33" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 
@@ -255,26 +255,25 @@
             }
         }
 
-        function downloadAudio() {
-            const audioUrl = 'https://s142.convertio.me/p/aAnqhhJgdpJyg5WzsxEqGw/a9a1c4cbe913ad7e015e89d1266fbc26/Text_to_Speech.mp3'; // Replace with actual audio URL
-            const link = document.createElement('a');
-            link.href = audioUrl;
-            link.download = 'audio.mp3';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        function toggleAudio() {
+            const audio = document.getElementById('audio');
+            if (audio.paused) {
+                audio.style.display = 'block';
+                audio.play();
+            } else {
+                audio.pause();
+            }
         }
-        
-        function downloadvideo() {
-            const audioUrl = 'https://files.fm/f/dxyccf4u33'; // Replace with actual audio URL
-            const link = document.createElement('a');
-            link.href = audioUrl;
-            link.download = 'audio.mp3';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            {
-    
+
+        function toggleVideo() {
+            const video = document.getElementById('video');
+            if (video.paused) {
+                video.style.display = 'block';
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
 
         // Scroll effects
         window.addEventListener('scroll', () => {
@@ -285,10 +284,16 @@
                 if (isVisible) {
                     el.style.opacity = '1';
                     el.style.transform = 'translateY(0)';
-                } else {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(20px)';
                 }
+            });
+        });
+
+        // Trigger scroll effect on page load
+        window.addEventListener('load', () => {
+            const elements = document.querySelectorAll('.content, .developer-info');
+            elements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
             });
         });
     </script>
