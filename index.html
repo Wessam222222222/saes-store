@@ -129,9 +129,9 @@
             transform: scale(1.05);
         }
 
-        #video, #audio {
+        #audio {
             width: 100%;
-            margin-top: 20px;
+            margin: 20px 0;
             display: none;
         }
 
@@ -149,11 +149,15 @@
             <h1>Technology and the Future of Education</h1>
         </header>
         
+        <audio id="audio" controls>
+            <source src="https://s142.convertio.me/p/aAnqhhJgdpJyg5WzsxEqGw/a9a1c4cbe913ad7e015e89d1266fbc26/Text_to_Speech.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
         <div class="button-container">
             <button onclick="copyText()">Copy Text</button>
             <button onclick="translatePage()">Translate to Arabic</button>
             <button onclick="toggleAudio()">Play/Pause Audio</button>
-            <button onclick="toggleVideo()">Play/Pause Video</button>
         </div>
 
         <div class="content">
@@ -187,16 +191,6 @@
                 Conclusion: Technology is not just an aid to education; it is the future that will reshape every aspect of learning. As technology evolves, we need to adapt to ensure that future generations benefit from it in building a better and more advanced future.
             </p>
         </div>
-
-        <audio id="audio" controls>
-            <source src="https://s142.convertio.me/p/aAnqhhJgdpJyg5WzsxEqGw/a9a1c4cbe913ad7e015e89d1266fbc26/Text_to_Speech.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        
-        <video id="video" controls>
-            <source src="https://files.fm/f/dxyccf4u33" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
 
         <div class="developer-info">
             <p>This website was developed by Wesam Ahmed</p>
@@ -262,16 +256,6 @@
                 audio.play();
             } else {
                 audio.pause();
-            }
-        }
-
-        function toggleVideo() {
-            const video = document.getElementById('video');
-            if (video.paused) {
-                video.style.display = 'block';
-                video.play();
-            } else {
-                video.pause();
             }
         }
 
