@@ -1,7 +1,7 @@
 <?php
 require 'connection.php';
 if(isset($_POST["submit"])){
-  $name = $_POST["name"];
+  $name = $_POST["name"];x
   if($_FILES["image"]["error"] == 4){
     echo
     "<script> alert('Image Does Not Exist'); </script>"
