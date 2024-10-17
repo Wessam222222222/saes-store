@@ -1,284 +1,160 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technology and the Future of Education</title>
+    <title>القرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Tajawal:wght@400;700&display=swap');
-
-        :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #50e3c2;
-            --background-color: #0f172a;
-            --text-color: #e2e8f0;
-            --accent-color: #f97316;
-        }
-
-        body {
-            font-family: 'Roboto', 'Tajawal', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        .surah-card {
             position: relative;
         }
-
-        header {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .developer-name {
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1.2em;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: titleAnimation 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleAnimation {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-10px); }
-        }
-
-        .content {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .content::before {
-            content: '';
+        .favorite-star {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
-            opacity: 0.1;
-            animation: ripple 15s linear infinite;
+            top: 10px;
+            right: 10px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s ease;
         }
-
-        @keyframes ripple {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-50%, -50%); }
+        .favorite-star.active {
+            color: gold;
         }
-
-        .content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-
-        .developer-info {
-            text-align: center;
-            margin-top: 30px;
-            font-style: italic;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .button-container {
+        .search-container {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            margin: 1rem 0;
         }
-
-        button {
+        .search-container input {
+            width: 70%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px 0 0 25px;
+            outline: none;
+        }
+        .search-container button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 0 25px 25px 0;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.3s ease;
         }
-
-        button:hover {
+        .search-container button:hover {
             background-color: var(--secondary-color);
-            transform: scale(1.05);
-        }
-
-        #audio {
-            width: 100%;
-            margin: 20px 0;
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            .content { padding: 20px; }
-            .button-container { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="developer-name" id="developer-name">المطور: وسام أحمد</div>
-            <h1>Technology and the Future of Education</h1>
+            <h1>القرآن الكريم</h1>
+            <p id="randomVerse" class="random-verse"></p>
         </header>
         
-        <audio id="audio" controls>
-            <source src="https://s142.convertio.me/p/aAnqhhJgdpJyg5WzsxEqGw/a9a1c4cbe913ad7e015e89d1266fbc26/Text_to_Speech.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-
-        <div class="button-container">
-            <button onclick="copyText()">Copy Text</button>
-            <button onclick="translatePage()">Translate to Arabic</button>
-            <button onclick="toggleAudio()">Play/Pause Audio</button>
+        <div class="search-container">
+            <input type="text" id="surahSearch" placeholder="ابحث عن اسم السورة...">
+            <button onclick="searchSurah()"><i class="fas fa-search"></i></button>
         </div>
-
-        <div class="content">
-            <p id="main-content">
-                Title: "Technology and the Future of Education"
-
-                Introduction: Education is the foundation that shapes the future of generations. With the rapid advancement of technology in recent years, we have witnessed significant changes in the way education is delivered. How can technology shape the future of education? This is what we will discuss today.
-
-                Main Points:
-
-                1. The role of technology in modern education:
-                Use of tablets and computers in classrooms.
-                Online learning and educational platforms.
-                Artificial intelligence applications in personalized learning.
-
-                2. Benefits of technological education:
-                Easy access to information and knowledge from anywhere in the world.
-                Improving the quality of learning using simulation and virtual reality.
-                Enhancing interaction between students and teachers through digital tools.
-
-                3. Challenges of technology in education:
-                The need for strong infrastructure and high-speed internet.
-                Lack of adequate training for teachers to use technology effectively.
-                The impact of technology on social interaction among students.
-
-                4. The future of education:
-                Virtual schools and digital science labs.
-                Using augmented reality to teach scientific subjects.
-                Expectations about educational jobs and how AI might affect the teaching profession.
-
-                Conclusion: Technology is not just an aid to education; it is the future that will reshape every aspect of learning. As technology evolves, we need to adapt to ensure that future generations benefit from it in building a better and more advanced future.
-            </p>
-        </div>
-
-        <div class="developer-info">
-            <p>This website was developed by Wesam Ahmed</p>
-        </div>
+        
+        <main>
+            <div id="surahGrid" class="surah-grid"></div>
+        </main>
+        
+        <nav class="bottom-nav">
+            <button onclick="showPage('index.html')" class="active">
+                <i class="fas fa-home icon"></i>
+                الرئيسية
+            </button>
+            <button onclick="showPage('hadith.html')">
+                <i class="fas fa-book icon"></i>
+                الأحاديث
+            </button>
+            <button onclick="showPage('favorites.html')">
+                <i class="fas fa-star icon"></i>
+                المفضلة
+            </button>
+            <button onclick="showPage('settings.html')">
+                <i class="fas fa-cog icon"></i>
+                الإعدادات
+            </button>
+        </nav>
     </div>
 
+    <script src="app.js"></script>
     <script>
-        function copyText() {
-            const text = document.getElementById('main-content').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Text copied to clipboard!');
-            });
-        }
-
-        function translatePage() {
-            const currentLang = document.documentElement.lang;
-            if (currentLang === 'en') {
-                document.documentElement.lang = 'ar';
-                document.documentElement.dir = 'rtl';
-                document.getElementById('main-content').innerHTML = `
-                    العنوان: "التكنولوجيا ومستقبل التعليم"
-
-                    المقدمة: التعليم هو الأساس الذي يشكل مستقبل الأجيال. مع التقدم السريع للتكنولوجيا في السنوات الأخيرة، شهدنا تغيرات كبيرة في طريقة تقديم التعليم. كيف يمكن للتكنولوجيا أن تشكل مستقبل التعليم؟ هذا ما سنناقشه اليوم.
-
-                    النقاط الرئيسية:
-
-                    1. دور التكنولوجيا في التعليم الحديث:
-                    استخدام الأجهزة اللوحية وأجهزة الكمبيوتر في الفصول الدراسية.
-                    التعلم عبر الإنترنت والمنصات التعليمية.
-                    تطبيقات الذكاء الاصطناعي في التعلم الشخصي.
-
-                    2. فوائد التعليم التكنولوجي:
-                    سهولة الوصول إلى المعلومات والمعرفة من أي مكان في العالم.
-                    تحسين جودة التعلم باستخدام المحاكاة والواقع الافتراضي.
-                    تعزيز التفاعل بين الطلاب والمعلمين من خلال الأدوات الرقمية.
-
-                    3. تحديات التكنولوجيا في التعليم:
-                    الحاجة إلى بنية تحتية قوية وإنترنت عالي السرعة.
-                    نقص التدريب الكافي للمعلمين لاستخدام التكنولوجيا بفعالية.
-                    تأثير التكنولوجيا على التفاعل الاجتماعي بين الطلاب.
-
-                    4. مستقبل التعليم:
-                    المدارس الافتراضية والمختبرات العلمية الرقمية.
-                    استخدام الواقع المعزز لتدريس المواد العلمية.
-                    توقعات حول الوظائف التعليمية وكيف قد يؤثر الذكاء الاصطناعي على مهنة التدريس.
-
-                    الخاتمة: التكنولوجيا ليست مجرد مساعد للتعليم؛ إنها المستقبل الذي سيعيد تشكيل كل جانب من جوانب التعلم. مع تطور التكنولوجيا، نحتاج إلى التكيف لضمان استفادة الأجيال القادمة منها في بناء مستقبل أفضل وأكثر تقدمًا.
+        function displaySurahs(surahsToDisplay = surahs) {
+            const surahGrid = document.getElementById('surahGrid');
+            if (!surahGrid) return;
+            
+            surahGrid.innerHTML = '';
+            surahsToDisplay.forEach(surah => {
+                const surahCard = document.createElement('div');
+                surahCard.className = 'surah-card';
+                surahCard.innerHTML = `
+                    <i class="fas fa-star favorite-star" onclick="toggleFavorite(event, ${surah.number})"></i>
+                    <h3>${surah.name}</h3>
+                    <p>سورة رقم ${surah.number}</p>
+                    <p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - ${surah.numberOfAyahs} آية</p>
                 `;
-                document.querySelector('h1').textContent = 'التكنولوجيا ومستقبل التعليم';
-                document.querySelector('.developer-info p').textContent = 'تم تطوير هذا الموقع بواسطة وسام أحمد';
-                document.getElementById('developer-name').textContent = 'المطور: وسام أحمد';
-            } else {
-                document.documentElement.lang = 'en';
-                document.documentElement.dir = 'ltr';
-                location.reload();
-            }
-        }
-
-        function toggleAudio() {
-            const audio = document.getElementById('audio');
-            if (audio.paused) {
-                audio.style.display = 'block';
-                audio.play();
-            } else {
-                audio.pause();
-            }
-        }
-
-        // Scroll effects
-        window.addEventListener('scroll', () => {
-            const elements = document.querySelectorAll('.content, .developer-info');
-            elements.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-                if (isVisible) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
+                surahCard.onclick = (event) => {
+                    if (!event.target.classList.contains('favorite-star')) {
+                        openSurahPage(surah.number);
+                    }
+                };
+                surahGrid.appendChild(surahCard);
+                
+                // تحقق مما إذا كانت السورة في المفضلة
+                const favorites = JSON.parse(localStorage.getItem('favoriteSurahs')) || [];
+                if (favorites.includes(surah.number)) {
+                    surahCard.querySelector('.favorite-star').classList.add('active');
                 }
             });
-        });
+        }
 
-        // Trigger scroll effect on page load
-        window.addEventListener('load', () => {
-            const elements = document.querySelectorAll('.content, .developer-info');
-            elements.forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            });
+        function toggleFavorite(event, surahNumber) {
+            event.stopPropagation();
+            const starIcon = event.target;
+            starIcon.classList.toggle('active');
+            
+            let favorites = JSON.parse(localStorage.getItem('favoriteSurahs')) || [];
+            if (starIcon.classList.contains('active')) {
+                if (!favorites.includes(surahNumber)) {
+                    favorites.push(surahNumber);
+                }
+            } else {
+                favorites = favorites.filter(num => num !== surahNumber);
+            }
+            localStorage.setItem('favoriteSurahs', JSON.stringify(favorites));
+        }
+
+        function searchSurah() {
+            const searchTerm = document.getElementById('surahSearch').value.toLowerCase();
+            const filteredSurahs = surahs.filter(surah => 
+                surah.name.toLowerCase().includes(searchTerm) ||
+                surah.englishName.toLowerCase().includes(searchTerm) ||
+                surah.englishNameTranslation.toLowerCase().includes(searchTerm)
+            );
+            displaySurahs(filteredSurahs);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const introShown = localStorage.getItem('introShown');
+            if (!introShown) {
+                // إذا لم يتم عرض المقدمة من قبل، انتقل إلى صفحة المقدمة
+                window.location.href = 'intro.html';
+            } else {
+                // إذا تم عرض المقدمة من قبل، قم بتحميل الصفحة الرئيسية مباشرة
+                applyCommonSettings();
+                fetchSurahs();
+                updateRandomVerse();
+                setInterval(updateRandomVerse, 10000);
+            }
         });
     </script>
 </body>
