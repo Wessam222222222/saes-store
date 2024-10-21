@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كتاب الفقه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .fiqh-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .fiqh-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .fiqh-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .fiqh-item p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="islamic-pattern"></div>
+    <div class="container">
+        <header>
+            <h1>كتاب الفقه</h1>
+        </header>
+        
+        <main class="fiqh-grid" id="fiqhGrid">
+            <!-- سيتم إضافة عناصر الفقه هنا ديناميكيًا -->
+        </main>
+        
+        <nav class="bottom-nav">
+            <button onclick="showPage('index.html')">
+                <i class="fas fa-home icon"></i>
+                الرئيسية
+            </button>
+            <button onclick="showPage('hadith.html')">
+                <i class="fas fa-book icon"></i>
+                الأحاديث
+            </button>
+            <button onclick="showAI()" class="ai-button button-pulse">AI</button>
+            <button onclick="showPage('favorites.html')">
+                <i class="fas fa-star icon"></i>
+                المفضلة
+            </button>
+            <button onclick="showPage('settings.html')">
+                <i class="fas fa-cog icon"></i>
+                الإعدادات
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const fiqhTopics = [
+            { title: "الطهارة", description: "أحكام الوضوء والغسل والتيمم" },
+            { title: "الصلاة", description: "أركان الصلاة وشروطها وأنواعها" },
+            { title: "الزكاة", description: "أحكام الزكاة ومصارفها" },
+            { title: "الصيام", description: "أحكام الصيام وفضائله" },
+            { title: "الحج", description: "مناسك الحج والعمرة" },
+            { title: "المعاملات", description: "البيع والشراء والإجارة" },
+            // يمكنك إضافة المزيد من المواضيع هنا
+        ];
+
+        function displayFiqhTopics() {
+            const fiqhGrid = document.getElementById('fiqhGrid');
+            fiqhTopics.forEach(topic => {
+                const topicDiv = document.createElement('div');
+                topicDiv.className = 'fiqh-item';
+                topicDiv.innerHTML = `
+                    <h3>${topic.title}</h3>
+                    <p>${topic.description}</p>
+                    <button class="button-pulse" onclick="showFiqhDetails('${topic.title}')">اقرأ المزيد</button>
+                `;
+                fiqhGrid.appendChild(topicDiv);
+            });
+        }
+
+        function showFiqhDetails(title) {
+            // هنا يمكنك إضافة المنطق لعرض تفاصيل موضوع الفقه
+            alert(`سيتم عرض تفاصيل ${title} قريبًا`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyCommonSettings();
+            displayFiqhTopics();
+        });
+    </script>
+</body>
+</html>

@@ -104,6 +104,13 @@
             padding-top: 1rem;
             border-top: 1px solid rgba(255,255,255,0.2);
         }
+        .color-picker {
+            display: flex;
+            align-items: center;
+        }
+        .color-picker input[type="color"] {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -140,6 +147,29 @@
             </div>
             <div class="setting">
                 <button onclick="exportBookmarks()">تصدير المفضلة</button>
+            </div>
+            <div class="setting">
+                <label for="headerColor">
+                    لون الشريط العلوي
+                    <div class="color-picker">
+                        <input type="color" id="headerColor" onchange="changeHeaderColor(this.value)">
+                    </div>
+                </label>
+            </div>
+            <div class="setting">
+                <label for="footerColor">
+                    لون الشريط السفلي
+                    <div class="color-picker">
+                        <input type="color" id="footerColor" onchange="changeFooterColor(this.value)">
+                    </div>
+                </label>
+            </div>
+            <div class="setting">
+                <label for="language">اللغة</label>
+                <select id="language" onchange="changeLanguage(this.value)">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                </select>
             </div>
             <div class="about-section">
                 <h2>من نحن</h2>
@@ -220,6 +250,21 @@
             }
         }
 
+        function changeHeaderColor(color) {
+            document.querySelector('header').style.backgroundColor = color;
+            localStorage.setItem('headerColor', color);
+        }
+
+        function changeFooterColor(color) {
+            document.querySelector('.bottom-nav').style.backgroundColor = color;
+            localStorage.setItem('footerColor', color);
+        }
+
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            // هنا يمكنك إضافة المنطق لتغيير لغة التطبيق
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             applyCommonSettings();
             
@@ -232,6 +277,17 @@
 
             const autoPlay = localStorage.getItem('autoPlay') === 'true';
             document.getElementById('autoPlay').checked = autoPlay;
+
+            const headerColor = localStorage.getItem('headerColor') || '#1e88e5';
+            document.getElementById('headerColor').value = headerColor;
+            document.querySelector('header').style.backgroundColor = headerColor;
+
+            const footerColor = localStorage.getItem('footerColor') || '#1e88e5';
+            document.getElementById('footerColor').value = footerColor;
+            document.querySelector('.bottom-nav').style.backgroundColor = footerColor;
+
+            const language = localStorage.getItem('language') || 'ar';
+            document.getElementById('language').value = language;
         });
     </script>
 </body>

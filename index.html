@@ -8,62 +8,106 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        .surah-card {
-            position: relative;
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
         }
-        .favorite-star {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #ccc;
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
             cursor: pointer;
-            transition: color 0.3s ease;
         }
-        .favorite-star.active {
-            color: gold;
+        .card:hover {
+            transform: translateY(-5px);
         }
-        .search-container {
+        .card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .islamic-pattern {
+            background-image: url('islamic-pattern.png');
+            background-repeat: repeat;
+            opacity: 0.1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .bottom-nav {
             display: flex;
-            justify-content: center;
-            margin: 1rem 0;
-        }
-        .search-container input {
-            width: 70%;
+            justify-content: space-around;
+            align-items: center;
             padding: 0.5rem;
-            font-size: 1rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 25px 0 0 25px;
-            outline: none;
-        }
-        .search-container button {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
             background-color: var(--primary-color);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        .ai-button {
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 0 25px 25px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
-        .search-container button:hover {
-            background-color: var(--secondary-color);
+        .ai-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
+    <div class="islamic-pattern"></div>
     <div class="container">
         <header>
             <h1>القرآن الكريم</h1>
             <p id="randomVerse" class="random-verse"></p>
         </header>
         
-        <div class="search-container">
-            <input type="text" id="surahSearch" placeholder="ابحث عن اسم السورة...">
-            <button onclick="searchSurah()"><i class="fas fa-search"></i></button>
-        </div>
-        
-        <main>
-            <div id="surahGrid" class="surah-grid"></div>
+        <main class="card-grid">
+            <div class="card" onclick="showPage('quran.html')">
+                <i class="fas fa-book-open"></i>
+                <h3>القرآن الكريم</h3>
+            </div>
+            <div class="card" onclick="showPage('azkar.html')">
+                <i class="fas fa-pray"></i>
+                <h3>الأذكار</h3>
+            </div>
+            <div class="card" onclick="showPage('qibla.html')">
+                <i class="fas fa-compass"></i>
+                <h3>اتجاه القبلة</h3>
+            </div>
+            <div class="card" onclick="showPage('stories.html')">
+                <i class="fas fa-book"></i>
+                <h3>قصص</h3>
+            </div>
+            <div class="card" onclick="showPage('fiqh.html')">
+                <i class="fas fa-balance-scale"></i>
+                <h3>كتاب الفقه</h3>
+            </div>
+            <div class="card" onclick="showPage('prayer_times.html')">
+                <i class="fas fa-clock"></i>
+                <h3>مواقيت الصلاة</h3>
+            </div>
+            <div class="card" onclick="showPage('tasbih.html')">
+                <i class="fas fa-dice"></i>
+                <h3>السبحة الإلكترونية</h3>
+            </div>
         </main>
         
         <nav class="bottom-nav">
@@ -75,6 +119,7 @@
                 <i class="fas fa-book icon"></i>
                 الأحاديث
             </button>
+            <button onclick="showAI()" class="ai-button">AI</button>
             <button onclick="showPage('favorites.html')">
                 <i class="fas fa-star icon"></i>
                 المفضلة
@@ -88,72 +133,9 @@
 
     <script src="app.js"></script>
     <script>
-        function displaySurahs(surahsToDisplay = surahs) {
-            const surahGrid = document.getElementById('surahGrid');
-            if (!surahGrid) return;
-            
-            surahGrid.innerHTML = '';
-            surahsToDisplay.forEach(surah => {
-                const surahCard = document.createElement('div');
-                surahCard.className = 'surah-card';
-                surahCard.innerHTML = `
-                    <i class="fas fa-star favorite-star" onclick="toggleFavorite(event, ${surah.number})"></i>
-                    <h3>${surah.name}</h3>
-                    <p>سورة رقم ${surah.number}</p>
-                    <p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - ${surah.numberOfAyahs} آية</p>
-                `;
-                surahCard.onclick = (event) => {
-                    if (!event.target.classList.contains('favorite-star')) {
-                        openSurahPage(surah.number);
-                    }
-                };
-                surahGrid.appendChild(surahCard);
-                
-                // تحقق مما إذا كانت السورة في المفضلة
-                const favorites = JSON.parse(localStorage.getItem('favoriteSurahs')) || [];
-                if (favorites.includes(surah.number)) {
-                    surahCard.querySelector('.favorite-star').classList.add('active');
-                }
-            });
-        }
-
-        function toggleFavorite(event, surahNumber) {
-            event.stopPropagation();
-            const starIcon = event.target;
-            starIcon.classList.toggle('active');
-            
-            let favorites = JSON.parse(localStorage.getItem('favoriteSurahs')) || [];
-            if (starIcon.classList.contains('active')) {
-                if (!favorites.includes(surahNumber)) {
-                    favorites.push(surahNumber);
-                }
-            } else {
-                favorites = favorites.filter(num => num !== surahNumber);
-            }
-            localStorage.setItem('favoriteSurahs', JSON.stringify(favorites));
-        }
-
-        function searchSurah() {
-            const searchTerm = document.getElementById('surahSearch').value.toLowerCase();
-            const filteredSurahs = surahs.filter(surah => 
-                surah.name.toLowerCase().includes(searchTerm) ||
-                surah.englishName.toLowerCase().includes(searchTerm) ||
-                surah.englishNameTranslation.toLowerCase().includes(searchTerm)
-            );
-            displaySurahs(filteredSurahs);
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            const introShown = localStorage.getItem('introShown');
-            if (!introShown) {
-                // إذا لم يتم عرض المقدمة من قبل، انتقل إلى صفحة المقدمة
+            if (localStorage.getItem('introShown') !== 'true') {
                 window.location.href = 'intro.html';
-            } else {
-                // إذا تم عرض المقدمة من قبل، قم بتحميل الصفحة الرئيسية مباشرة
-                applyCommonSettings();
-                fetchSurahs();
-                updateRandomVerse();
-                setInterval(updateRandomVerse, 10000);
             }
         });
     </script>
