@@ -34,6 +34,37 @@
             color: #000;
             font-size: 0.9rem;
         }
+        .search-container {
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        #searchInput {
+            width: 80%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .surah-item {
+            position: relative;
+        }
+        .favorite-star {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .favorite-star.active {
+            color: gold;
+        }
+        .surah-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +72,10 @@
         <header>
             <h1>القرآن الكريم</h1>
         </header>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="ابحث عن سورة...">
+        </div>
         
         <main class="surah-list" id="surahList">
             <!-- السور ستضاف هنا ديناميكيًا -->
@@ -81,17 +116,56 @@
 
         function displaySurahs(surahs) {
             const surahList = document.getElementById('surahList');
+            surahList.innerHTML = ''; // مسح المحتوى السابق
             surahs.forEach(surah => {
                 const surahItem = document.createElement('div');
                 surahItem.className = 'surah-item';
                 surahItem.innerHTML = `
+                    <i class="fas fa-star favorite-star" onclick="toggleFavorite(event, ${surah.number})"></i>
                     <h3>${surah.name}</h3>
                     <p>${surah.englishName}</p>
                     <p>${surah.numberOfAyahs} آيات</p>
+                    <div class="surah-info">
+                        <p>${surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'}</p>
+                        <p>الترتيب: ${surah.number}</p>
+                        <p>الجزء: ${getJuzInfo(surah.number)}</p>
+                    </div>
                 `;
-                surahItem.onclick = () => openSurahPage(surah.number);
+                surahItem.onclick = (e) => {
+                    if (!e.target.classList.contains('favorite-star')) {
+                        openSurahPage(surah.number);
+                    }
+                };
                 surahList.appendChild(surahItem);
             });
+            updateFavoriteStars();
+        }
+
+        function toggleFavorite(event, surahNumber) {
+            event.stopPropagation();
+            const favorites = JSON.parse(localStorage.getItem('favoriteSurahs') || '[]');
+            const index = favorites.indexOf(surahNumber);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(surahNumber);
+            }
+            localStorage.setItem('favoriteSurahs', JSON.stringify(favorites));
+            updateFavoriteStars();
+        }
+
+        function updateFavoriteStars() {
+            const favorites = JSON.parse(localStorage.getItem('favoriteSurahs') || '[]');
+            document.querySelectorAll('.favorite-star').forEach((star, index) => {
+                star.classList.toggle('active', favorites.includes(index + 1));
+            });
+        }
+
+        function getJuzInfo(surahNumber) {
+            // هذه مجرد تقريب بسيط. يمكنك تحسينه بمعلومات أكثر دقة.
+            if (surahNumber >= 67) return 'تبارك';
+            if (surahNumber >= 78) return 'عم';
+            return 'عامة';
         }
 
         function openSurahPage(surahNumber) {
@@ -103,6 +177,16 @@
             applyCommonSettings();
             const surahs = await fetchSurahs();
             displaySurahs(surahs);
+
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredSurahs = surahs.filter(surah => 
+                    surah.name.toLowerCase().includes(searchTerm) ||
+                    surah.englishName.toLowerCase().includes(searchTerm)
+                );
+                displaySurahs(filteredSurahs);
+            });
         });
     </script>
 </body>
