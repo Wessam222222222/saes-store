@@ -228,4 +228,140 @@ function selectServer(index) {
     
     // تحديث عنوان نافذة الأدوار
     rolesModalTitle.textContent = `اختر دورك في سيرفر ${server.name}`;
-    rolesModalSubtitle.textContent =
+    rolesModalSubtitle.textContent = `اختر وظيفة مناسبة لك للانضمام إلى ${server.name}`;
+    
+    // عرض الأدوار في النافذة المنبثقة
+    renderRolesInModal();
+    
+    // إظهار نافذة اختيار الأدوار
+    showRolesModal();
+    
+    // عرض رسالة الاختيار
+    showSelectionMessage(`تم اختيار سيرفر ${server.name}. الرجاء اختيار وظيفة الآن.`, 'success');
+}
+
+// تأكيد اختيار الدور
+function confirmRoleSelection() {
+    if (selectedRole !== null) {
+        const role = roles[selectedRole];
+        showSelectionMessage(`تم اختيار وظيفة ${role.name}. جاهز للإرسال!`, 'success');
+        hideRolesModal();
+        createJoinMessage();
+    } else {
+        showSelectionMessage('الرجاء اختيار وظيفة أولاً', 'error');
+    }
+}
+
+// إلغاء اختيار الدور
+function cancelRoleSelection() {
+    selectedRole = null;
+    hideRolesModal();
+    showSelectionMessage('تم إلغاء اختيار الوظيفة', 'error');
+}
+
+// إنشاء رسالة الإنضمام
+function createJoinMessage() {
+    if (selectedServer !== null && selectedRole !== null) {
+        const server = servers[selectedServer];
+        const role = roles[selectedRole];
+        
+        currentMessage = `مرحباً، أنا مهتم بالانضمام إلى سيرفر ${server.name} كـ ${role.name}.\n\n${role.message}\n\nشكراً!`;
+        
+        // عرض نافذة الرسالة
+        showMessageModal();
+    }
+}
+
+// إرسال الرسالة عبر الإنستجرام
+function sendMessage() {
+    if (selectedServer !== null) {
+        const server = servers[selectedServer];
+        window.open(server.instagramLink, '_blank');
+        copyToClipboard(currentMessage);
+    }
+}
+
+// نسخ الرسالة
+function copyMessage() {
+    copyToClipboard(currentMessage);
+    showSelectionMessage('تم نسخ الرسالة إلى الحافظة، يرجى لصقها في جروب الإنستجرام', 'success');
+}
+
+// عرض نافذة الأدوار
+function showRolesModal() {
+    rolesModal.classList.add('active');
+}
+
+// إخفاء نافذة الأدوار
+function hideRolesModal() {
+    rolesModal.classList.remove('active');
+}
+
+// عرض نافذة الرسالة
+function showMessageModal() {
+    if (selectedServer !== null && selectedRole !== null) {
+        const server = servers[selectedServer];
+        const role = roles[selectedRole];
+        
+        messageContent.textContent = currentMessage;
+        
+        // تعيين رابط الإنستجرام مع نص الرسالة
+        sendMessageBtn.href = server.instagramLink;
+        
+        messageModal.classList.add('active');
+    }
+}
+
+// إخفاء نافذة الرسالة
+function hideMessageModal() {
+    messageModal.classList.remove('active');
+}
+
+// عرض رسالة الاختيار
+function showSelectionMessage(message, type = '') {
+    messageText.textContent = message;
+    selectionMessage.className = 'selection-message';
+    
+    if (type === 'error') {
+        selectionMessage.classList.add('error');
+    } else if (type === 'success') {
+        selectionMessage.classList.add('success');
+    }
+    
+    // إظهار الرسالة مع حركة
+    setTimeout(() => {
+        selectionMessage.classList.add('show');
+    }, 10);
+    
+    // إخفاء الرسالة بعد 5 ثواني
+    setTimeout(() => {
+        hideSelectionMessage();
+    }, 5000);
+}
+
+// إخفاء رسالة الاختيار
+function hideSelectionMessage() {
+    selectionMessage.classList.remove('show');
+}
+
+// إخفاء نافذة التحقق
+function hideVerificationModal() {
+    verificationModal.classList.remove('active');
+    mainContent.style.display = 'block';
+}
+
+// نسخ النص إلى الحافظة
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        showSelectionMessage('تم نسخ الرسالة إلى الحافظة!', 'success');
+    }, function() {
+        // طريقة بديلة إذا لم تعمل Clipboard API
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showSelectionMessage('تم نسخ الرسالة إلى الحافظة!', 'success');
+    });
+}
