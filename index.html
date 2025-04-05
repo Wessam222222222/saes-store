@@ -651,4 +651,263 @@
             },
             {
                 name: "سيرفر الجيش والشرطة",
-                image: "https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/a977ea67-b4b1-4d91-92a7-d6a4a6e27294/413429009/one-state-rp-mmorp
+                image: "https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/a977ea67-b4b1-4d91-92a7-d6a4a6e27294/413429009/one-state-rp-mmorpg-sandbox-screenshot.png",
+                description: "تركيز على الأدوار الأمنية والعسكرية مع تدريبات خاصة",
+                players: "700/900",
+                instagramLink: "https://instagram.com/onestate_army",
+                online: true,
+                isYoutuber: false
+            }
+        ];
+        
+        // بيانات الأدوار
+        const roles = [
+            {
+                name: "شرطي",
+                icon: "👮‍♂️",
+                description: "حافظ على الأمن والنظام في المدينة",
+                emoji: "👮‍♂️"
+            },
+            {
+                name: "مسعف",
+                icon: "🚑",
+                description: "أنقذ الأرواح وساعد المصابين",
+                emoji: "🚑"
+            },
+            {
+                name: "جندي في الجيش",
+                icon: "🎖️",
+                description: "انضم إلى القوات المسلحة",
+                emoji: "🎖️"
+            },
+            {
+                name: "عصابة",
+                icon: "🔫",
+                description: "كن جزءاً من عالم الجريمة",
+                emoji: "🔫"
+            },
+            {
+                name: "شخص عادي",
+                icon: "👨‍💼",
+                description: "عش حياة عادية مع وظيفة تقليدية",
+                emoji: "👨‍💼"
+            },
+            {
+                name: "تاجر عقارات",
+                icon: "🏘️",
+                description: "اشترِ وبع العقارات",
+                emoji: "🏘️"
+            },
+            {
+                name: "تاجر سيارات",
+                icon: "🏎️",
+                description: "افتح معرض سيارات",
+                emoji: "🏎️"
+            },
+            {
+                name: "أدمن سيرفر",
+                icon: "🛡️",
+                description: "ساعد في إدارة السيرفر",
+                emoji: "🛡️"
+            },
+            {
+                name: "مصور محتوى",
+                icon: "🎥",
+                description: "أنشئ محتوى لليوتيوب",
+                emoji: "🎥"
+            }
+        ];
+        
+        // متغيرات التطبيق
+        let selectedServer = null;
+        let selectedRole = null;
+        
+        // DOM Elements
+        const serversContainer = document.getElementById('serversContainer');
+        const rolesContainer = document.getElementById('rolesContainer');
+        const verificationModal = document.getElementById('verificationModal');
+        const verifyButton = document.getElementById('verifyButton');
+        const mainContent = document.getElementById('mainContent');
+        const selectionMessage = document.getElementById('selectionMessage');
+        const messageText = document.getElementById('messageText');
+        const rolesSection = document.getElementById('rolesSection');
+        
+        // تهيئة الصفحة
+        function initPage() {
+            displayServers();
+            displayRoles();
+            
+            // إخفاء قسم الأدوار في البداية
+            rolesSection.style.opacity = '0';
+            rolesSection.style.height = '0';
+            rolesSection.style.overflow = 'hidden';
+            rolesSection.style.transition = 'opacity 0.3s ease, height 0.3s ease';
+        }
+        
+        // عرض السيرفرات
+        function displayServers() {
+            serversContainer.innerHTML = '';
+            
+            // عرض سيرفر Boydairy أولاً إذا كان topServer
+            const topServer = servers.find(server => server.topServer);
+            if (topServer) {
+                createServerCard(topServer, 0);
+            }
+            
+            // عرض بقية السيرفرات
+            servers.forEach((server, index) => {
+                if (!server.topServer) {
+                    createServerCard(server, index + 1);
+                }
+            });
+        }
+        
+        // إنشاء بطاقة سيرفر
+        function createServerCard(server, order) {
+            const serverCard = document.createElement('div');
+            serverCard.className = `server-card ${server.isYoutuber ? 'youtuber-server' : ''}`;
+            serverCard.style.setProperty('--order', order);
+            
+            serverCard.innerHTML = `
+                <div class="server-header">
+                    ${server.isYoutuber ? 
+                        `<div class="youtuber-badge">
+                            <i class="fab fa-youtube"></i> سيرفر اليوتيوبر
+                        </div>` : ''}
+                    ${server.topServer ? 
+                        `<div class="top-player-count">
+                            👥 ${server.players}
+                        </div>` : ''}
+                    <img src="${server.image}" alt="${server.name}">
+                    <div class="server-name">${server.name}</div>
+                </div>
+                <div class="server-info">
+                    <p class="server-description">${server.description}</p>
+                    <div class="server-stats">
+                        ${!server.topServer ? `<span>اللاعبون: ${server.players}</span>` : ''}
+                        <span>${server.online ? '🟢 متصل' : '🔴 غير متصل'}</span>
+                    </div>
+                    <button class="server-button" data-server='${JSON.stringify(server).replace(/'/g, "\\'")}'>
+                        ${server.isYoutuber ? 'انضم إلى السيرفر' : 'اختر هذا السيرفر'}
+                    </button>
+                </div>
+            `;
+            
+            serversContainer.appendChild(serverCard);
+            
+            // إضافة حدث النقر على زر السيرفر
+            const button = serverCard.querySelector('.server-button');
+            button.addEventListener('click', function() {
+                const serverData = JSON.parse(this.getAttribute('data-server'));
+                selectServer(serverData);
+            });
+        }
+        
+        // عرض الأدوار
+        function displayRoles() {
+            rolesContainer.innerHTML = '';
+            
+            roles.forEach((role, index) => {
+                const roleCard = document.createElement('div');
+                roleCard.className = 'role-card';
+                roleCard.style.setProperty('--order', index);
+                roleCard.innerHTML = `
+                    <div class="role-icon">${role.icon}</div>
+                    <h3 class="role-name">${role.name}</h3>
+                    <p class="role-description">${role.description}</p>
+                `;
+                
+                roleCard.addEventListener('click', () => {
+                    selectRole(role);
+                });
+                
+                rolesContainer.appendChild(roleCard);
+            });
+        }
+        
+        // اختيار السيرفر
+        function selectServer(server) {
+            // إزالة التحديد من جميع السيرفرات
+            document.querySelectorAll('.server-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للسيرفر المختار
+            event.target.closest('.server-card').classList.add('selected');
+            selectedServer = server;
+            
+            // إظهار قسم الأدوار
+            rolesSection.style.opacity = '1';
+            rolesSection.style.height = 'auto';
+            
+            // إظهار رسالة
+            showMessage(`تم اختيار سيرفر: <strong>${server.name}</strong>. الرجاء اختيار وظيفة من القائمة أدناه`, 'success');
+        }
+        
+        // اختيار الدور
+        function selectRole(role) {
+            // إزالة التحديد من جميع الأدوار
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للدور المختار
+            event.target.classList.add('selected');
+            selectedRole = role;
+            
+            // إظهار رسالة
+            showMessage(`تم اختيار وظيفة: <strong>${role.name}</strong>. يمكنك الآن الانضمام إلى السيرفر`, 'success');
+        }
+        
+        // إظهار رسالة
+        function showMessage(text, type) {
+            messageText.innerHTML = text;
+            selectionMessage.className = 'selection-message show';
+            selectionMessage.classList.add(type);
+            
+            setTimeout(() => {
+                selectionMessage.classList.remove('show');
+                setTimeout(() => {
+                    selectionMessage.classList.remove(type);
+                }, 300);
+            }, 3000);
+        }
+        
+        // أحداث الصفحة
+        verifyButton.addEventListener('click', () => {
+            verificationModal.classList.remove('active');
+            setTimeout(() => {
+                mainContent.style.display = 'block';
+                initPage();
+            }, 300);
+        });
+        
+        // تعديل روابط الإنستجرام لإضافة بيانات الاختيار
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('server-button')) {
+                e.preventDefault();
+                
+                const server = JSON.parse(e.target.getAttribute('data-server'));
+                
+                if (!selectedRole) {
+                    showMessage('⚠️ يجب اختيار وظيفة قبل الانضمام إلى السيرفر', 'error');
+                    return;
+                }
+                
+                // إذا تم اختيار كل من السيرفر والوظيفة
+                const instagramLink = `${server.instagramLink}?utm_source=onestate_site&server=${encodeURIComponent(server.name)}&role=${encodeURIComponent(selectedRole.name)}&emoji=${encodeURIComponent(selectedRole.emoji)}`;
+                
+                // فتح الرابط في نافذة جديدة
+                window.open(instagramLink, '_blank');
+                
+                // إرسال بيانات الاختيار (وهمي لأغراض العرض)
+                console.log('تم اختيار:', {
+                    server: server.name,
+                    role: selectedRole.name,
+                    timestamp: new Date().toLocaleString()
+                });
+            }
+        });
+    </script>
+</body>
+</html>
