@@ -6,7 +6,691 @@
     <title>One State RP - سيرفرات لعب الأدوار</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f1a;
+            color: #fff;
+            background-image: linear-gradient(rgba(15, 15, 26, 0.9), rgba(15, 15, 26, 0.9)), 
+                            url('https://via.placeholder.com/1920x1080/0f0f1a/ffffff?text=One+State+RP+Background');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            position: relative;
+            display: none;
+        }
+        
+        /* شريط التنقل */
+        .navbar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .social-link {
+            color: #f9cb28;
+            background: rgba(30, 30, 50, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(249, 203, 40, 0.3);
+            font-size: 18px;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: rgba(249, 203, 40, 0.3);
+            box-shadow: 0 4px 8px rgba(249, 203, 40, 0.2);
+        }
+        
+        .creator-credit {
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            margin: 10px auto;
+            border-radius: 3px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .servers-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .server-card {
+            background: rgba(30, 30, 50, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+            animation-delay: calc(var(--order) * 0.1s);
+        }
+        
+        .server-card.selected {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+        
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .server-header {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        .server-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .server-card:hover .server-header img {
+            transform: scale(1.05);
+        }
+        
+        .server-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .server-info {
+            padding: 15px;
+        }
+        
+        .server-description {
+            color: #ccc;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .server-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 13px;
+        }
+        
+        .server-button {
+            display: block;
+            text-align: center;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            color: #000;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            font-size: 15px;
+        }
+        
+        .server-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(249, 203, 40, 0.3);
+        }
+        
+        .server-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* نافذة اختيار الوظيفة */
+        .roles-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 15px;
+        }
+        
+        .roles-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .roles-content {
+            background: rgba(30, 30, 50, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(249, 203, 40, 0.3);
+            box-shadow: 0 0 25px rgba(249, 203, 40, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .roles-modal.active .roles-content {
+            transform: scale(1);
+        }
+        
+        .roles-content h2 {
+            color: #f9cb28;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .roles-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #ddd;
+        }
+        
+        .roles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .role-card {
+            background: rgba(40, 40, 60, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+            animation-delay: calc(var(--order) * 0.1s);
+        }
+        
+        .role-card.selected {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        
+        .role-card:hover {
+            transform: translateY(-3px);
+            background: rgba(50, 50, 80, 0.8);
+        }
+        
+        .role-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #f9cb28;
+        }
+        
+        .role-name {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .role-description {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .modal-button {
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        
+        .modal-button.confirm {
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            color: #000;
+        }
+        
+        .modal-button.cancel {
+            background: #333;
+            color: #fff;
+        }
+        
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* رسالة اختيار الوظيفة */
+        .selection-message {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 30, 50, 0.95);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #f9cb28;
+            width: calc(100% - 30px);
+            max-width: 500px;
+            text-align: center;
+            z-index: 100;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .selection-message.show {
+            bottom: 20px;
+        }
+        
+        .selection-message.error {
+            border-left-color: #ff4d4d;
+        }
+        
+        .selection-message.success {
+            border-left-color: #4CAF50;
+        }
+        
+        .selection-message p {
+            margin: 0;
+            font-size: 15px;
+            color: #fff;
+        }
+        
+        /* نافذة التحقق */
+        .verification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 15px;
+        }
+        
+        .verification-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .verification-content {
+            background: rgba(30, 30, 50, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(249, 203, 40, 0.3);
+            box-shadow: 0 0 25px rgba(249, 203, 40, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        
+        .verification-modal.active .verification-content {
+            transform: scale(1);
+        }
+        
+        .verification-content h2 {
+            color: #f9cb28;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .verification-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #ddd;
+        }
+        
+        .verification-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(249, 203, 40, 0.3);
+        }
+        
+        .verification-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+            width: 100%;
+            max-width: 200px;
+        }
+        
+        .verification-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(249, 203, 40, 0.3);
+        }
+        
+        /* نافذة إرسال الرسالة */
+        .message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 15px;
+        }
+        
+        .message-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .message-content {
+            background: rgba(30, 30, 50, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(249, 203, 40, 0.3);
+            box-shadow: 0 0 25px rgba(249, 203, 40, 0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        
+        .message-modal.active .message-content {
+            transform: scale(1);
+        }
+        
+        .message-content h2 {
+            color: #f9cb28;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .message-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #ddd;
+            text-align: right;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 3px solid #f9cb28;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+        
+        .message-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .message-button {
+            display: inline-block;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+            text-align: center;
+        }
+        
+        .message-button.instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+        }
+        
+        .message-button.copy {
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            color: #000;
+        }
+        
+        .message-button.close {
+            background: #333;
+            color: #fff;
+            margin-top: 10px;
+        }
+        
+        .message-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* سيرفر اليوتيوبر */
+        .youtuber-server {
+            grid-column: 1 / -1;
+        }
+        
+        .youtuber-server .server-header {
+            height: 180px;
+        }
+        
+        .youtuber-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+        }
+        
+        .youtuber-badge i {
+            margin-right: 6px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .top-player-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #f9cb28;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        /* حركات */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* التجاوب مع أحجام الشاشات */
+        @media (min-width: 480px) {
+            .servers-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .roles-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .navbar {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 15px 0;
+            }
+            
+            .social-links {
+                margin-bottom: 0;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .server-header {
+                height: 180px;
+            }
+            
+            .modal-buttons {
+                flex-direction: row;
+            }
+            
+            .message-buttons {
+                flex-direction: row;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .servers-container {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 20px;
+            }
+            
+            .roles-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+            
+            .youtuber-server .server-header {
+                height: 220px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- نافذة التحقق -->
@@ -91,6 +775,374 @@
         </footer>
     </div>
     
-    <script src="script.js"></script>
+    <script>
+        // بيانات السيرفرات
+        const servers = [
+            {
+                name: "GLENDALE ΜΕ",
+                image: "https://play-lh.googleusercontent.com/YAWv6qCsri2Ff8DAOanjKSNRrHZYLnD6Lc7pHtCmzEq-S7RGsyO5abdAcXYA9JOUNH0=w5120-h2880-rw",
+                description: "السيرفر الرسمي لليوتيوبر Boydairy مع أحداث حصرية ومحتوى مميز. انضم الآن لتكون جزءاً من هذه التجربة الفريدة!",
+                players: "500/500",
+                instagramLink: "https://ig.me/j/AbaQGvII1V6B6E5i/",
+                online: true,
+                isYoutuber: true,
+                youtubeChannel: "https://youtube.com/boydairy",
+                topServer: true
+            },
+            {
+                name: "SOLANO ME",
+                image: "https://play-lh.googleusercontent.com/COhdCDc4ooWHCXlZZH1y_EP9-83HYbOmgjKHgYky8oyvZ4Qiocrhyzs1ZYc1z5G009-7=w1052-h592-rw",
+                description: "السيرفر الرسمي للعبة One State RP مع أفضل الأداء وأحدث التحديثات",
+                players: "1200/1500",
+                instagramLink: "https://ig.me/j/AbYmZ0HUmyUJ-HPB/",
+                online: true,
+                isYoutuber: false
+            },
+            {
+                name: "سيرفر الأبطال",
+                image: "https://play-lh.googleusercontent.com/-jqzDw2Xw_uQkWcVs0nNRxomlGGu-rmQGLRM-b90ujx6W9HAW4DFi6j4TqPw-zxTSe8=w1052-h592-rw",
+                description: "سيرفر مخصص للمحترفين مع تحديات ومهام حصرية",
+                players: "850/1000",
+                instagramLink: "https://instagram.com/onestate_heroes",
+                online: true,
+                isYoutuber: false
+            },
+            {
+                name: "سيرفر المبتدئين",
+                image: "https://play-lh.googleusercontent.com/zu7ebpbjWBfhB-xkNEJ5gQk7-3JqhLXezXQo42eGXVuB8gaUNeHgmIWdeFCFHPPUSA=w1052-h592-rw",
+                description: "مكان مثالي للاعبين الجدد لتعلم أساسيات اللعبة",
+                players: "600/800",
+                instagramLink: "https://instagram.com/onestate_newbies",
+                online: true,
+                isYoutuber: false
+            },
+            {
+                name: "سيرفر الأدوار المتقدمة",
+                image: "https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/a977ea67-b4b1-4d91-92a7-d6a4a6e27294/3716157514/one-state-rp-mmorpg-sandbox-screenshot.png",
+                description: "تجربة لعب أدوار متقدمة مع أنظمة محسنة للتفاعل",
+                players: "950/1200",
+                instagramLink: "https://instagram.com/onestate_advanced",
+                online: true,
+                isYoutuber: false
+            },
+            {
+                name: "سيرفر الجيش والشرطة",
+                image: "https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/a977ea67-b4b1-4d91-92a7-d6a4a6e27294/413429009/one-state-rp-mmorpg-sandbox-screenshot.png",
+                description: "سيرفر مخصص لأدوار الجيش والشرطة مع أنظمة خاصة",
+                players: "700/800",
+                instagramLink: "https://instagram.com/onestate_police",
+                online: true,
+                isYoutuber: false
+            }
+        ];
+
+        // بيانات الأدوار المعدلة حسب الطلب
+        const roles = [
+            {
+                name: "شرطي",
+                icon: "fa-shield-alt",
+                description: "حافظ على الأمن والنظام في المدينة، قم باعتقال المجرمين وتطبيق القانون.",
+                message: "أريد الانضمام إلى سيرفر One State RP كشرطي. أنا ملتزم بتطبيق القانون والحفاظ على الأمن في المدينة."
+            },
+            {
+                name: "جيش",
+                icon: "fa-helmet-battle",
+                description: "كن جزءاً من القوات المسلحة وقم بحماية المدينة من التهديدات الخارجية.",
+                message: "أريد الانضمام إلى سيرفر One State RP كعضو في الجيش. أنا مستعد لحماية المدينة والدفاع عنها ضد أي تهديدات."
+            },
+            {
+                name: "أدمن",
+                icon: "fa-user-crown",
+                description: "ساعد في إدارة السيرفر وضبط النظام بين اللاعبين.",
+                message: "أريد الانضمام إلى سيرفر One State RP كأدمن. لدي خبرة في إدارة السيرفرات وأريد المساعدة في الحفاظ على النظام."
+            },
+            {
+                name: "مواطن عادي",
+                icon: "fa-user",
+                description: "عش حياة عادية في المدينة وابنِ مستقبلك الخاص.",
+                message: "أريد الانضمام إلى سيرفر One State RP كمواطن عادي. أريد بناء حياة افتراضية ممتعة في المدينة."
+            },
+            {
+                name: "طبيب",
+                icon: "fa-user-md",
+                description: "قدم الرعاية الطبية للمواطنين وأنقذ الأرواح في حالات الطوارئ.",
+                message: "أريد الانضمام إلى سيرفر One State RP كطبيب. لدي خبرة في تقديم الرعاية الطبية وإنقاذ الأرواح."
+            },
+            {
+                name: "عضو عصابه",
+                icon: "fa-mask",
+                description: "انضم إلى عالم الجريمة المنظم وكن جزءاً من عصابة سرية.",
+                message: "أريد الانضمام إلى سيرفر One State RP كعضو في عصابة. أريد استكشاف عالم الجريمة المنظم في المدينة."
+            },
+            {
+                name: "مساعد مونتاج",
+                icon: "fa-video",
+                description: "ساعد في تحرير مقاطع الفيديو والمحتوى لليوتيوب.",
+                message: "أريد الانضمام إلى سيرفر One State RP كمساعد مونتاج. لدي مهارات في تحرير الفيديو وأريد المساعدة في إنتاج محتوى لليوتيوب."
+            }
+        ];
+
+        // متغيرات التطبيق
+        let selectedServer = null;
+        let selectedRole = null;
+        let currentMessage = "";
+
+        // عناصر DOM
+        const verificationModal = document.getElementById('verificationModal');
+        const verifyButton = document.getElementById('verifyButton');
+        const mainContent = document.getElementById('mainContent');
+        const serversContainer = document.getElementById('serversContainer');
+        const rolesModal = document.getElementById('rolesModal');
+        const rolesContainer = document.getElementById('rolesContainer');
+        const rolesModalTitle = document.getElementById('rolesModalTitle');
+        const rolesModalSubtitle = document.getElementById('rolesModalSubtitle');
+        const confirmRoleBtn = document.getElementById('confirmRoleBtn');
+        const cancelRoleBtn = document.getElementById('cancelRoleBtn');
+        const selectionMessage = document.getElementById('selectionMessage');
+        const messageText = document.getElementById('messageText');
+        const messageModal = document.getElementById('messageModal');
+        const messageContent = document.getElementById('messageContent');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const copyMessageBtn = document.getElementById('copyMessageBtn');
+        const closeMessageBtn = document.getElementById('closeMessageBtn');
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            // عرض السيرفرات
+            renderServers();
+            
+            // أحداث النقر
+            verifyButton.addEventListener('click', hideVerificationModal);
+            confirmRoleBtn.addEventListener('click', confirmRoleSelection);
+            cancelRoleBtn.addEventListener('click', cancelRoleSelection);
+            sendMessageBtn.addEventListener('click', sendMessage);
+            copyMessageBtn.addEventListener('click', copyMessage);
+            closeMessageBtn.addEventListener('click', hideMessageModal);
+        });
+
+        // عرض السيرفرات
+        function renderServers() {
+            serversContainer.innerHTML = '';
+            
+            servers.forEach((server, index) => {
+                const serverCard = document.createElement('div');
+                serverCard.className = `server-card ${server.isYoutuber ? 'youtuber-server' : ''} ${server.topServer ? 'top-server' : ''}`;
+                serverCard.style.setProperty('--order', index);
+                
+                let badge = '';
+                if (server.isYoutuber) {
+                    badge = `<div class="youtuber-badge"><i class="fab fa-youtube"></i> سيرفر اليوتيوبر</div>`;
+                }
+                
+                if (server.topServer) {
+                    badge += `<div class="top-player-count"><i class="fas fa-crown"></i> الأكثر نشاطاً</div>`;
+                }
+                
+                serverCard.innerHTML = `
+                    <div class="server-header">
+                        ${badge}
+                        <img src="${server.image}" alt="${server.name}">
+                        <div class="server-name">${server.name}</div>
+                    </div>
+                    <div class="server-info">
+                        <p class="server-description">${server.description}</p>
+                        <div class="server-stats">
+                            <span><i class="fas fa-users"></i> اللاعبون: ${server.players}</span>
+                            <span class="${server.online ? 'online' : 'offline'}">
+                                <i class="fas fa-circle"></i> ${server.online ? 'متصل' : 'غير متصل'}
+                            </span>
+                        </div>
+                        <button class="server-button" data-server-index="${index}" ${!server.online ? 'disabled' : ''}>
+                            ${server.online ? 'اختر هذا السيرفر' : 'غير متاح حالياً'}
+                        </button>
+                    </div>
+                `;
+                
+                serversContainer.appendChild(serverCard);
+                
+                // حدث اختيار السيرفر
+                const selectButton = serverCard.querySelector('.server-button');
+                selectButton.addEventListener('click', function() {
+                    selectServer(index);
+                });
+            });
+        }
+
+        // عرض الأدوار في النافذة المنبثقة
+        function renderRolesInModal() {
+            rolesContainer.innerHTML = '';
+            
+            roles.forEach((role, index) => {
+                const roleCard = document.createElement('div');
+                roleCard.className = 'role-card';
+                roleCard.style.setProperty('--order', index);
+                roleCard.innerHTML = `
+                    <div class="role-icon">
+                        <i class="fas ${role.icon}"></i>
+                    </div>
+                    <h3 class="role-name">${role.name}</h3>
+                    <p class="role-description">${role.description}</p>
+                `;
+                
+                roleCard.addEventListener('click', function() {
+                    // إلغاء تحديد الأدوار الأخرى
+                    document.querySelectorAll('.role-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
+                    // تحديد الدور الجديد
+                    roleCard.classList.add('selected');
+                    selectedRole = index;
+                });
+                
+                rolesContainer.appendChild(roleCard);
+            });
+        }
+
+        // اختيار السيرفر
+        function selectServer(index) {
+            selectedServer = index;
+            const server = servers[index];
+            
+            // تحديث عنوان نافذة الأدوار
+            rolesModalTitle.textContent = `اختر دورك في سيرفر ${server.name}`;
+            rolesModalSubtitle.textContent = `اختر وظيفة مناسبة لك للانضمام إلى ${server.name}`;
+            
+            // عرض الأدوار في النافذة المنبثقة
+            renderRolesInModal();
+            
+            // إظهار نافذة اختيار الأدوار
+            showRolesModal();
+            
+            // عرض رسالة الاختيار
+            showSelectionMessage(`تم اختيار سيرفر ${server.name}. الرجاء اختيار وظيفة الآن.`, 'success');
+        }
+
+        // تأكيد اختيار الدور
+        function confirmRoleSelection() {
+            if (selectedRole !== null) {
+                const role = roles[selectedRole];
+                showSelectionMessage(`تم اختيار وظيفة ${role.name}. جاهز للإرسال!`, 'success');
+                hideRolesModal();
+                createJoinMessage();
+            } else {
+                showSelectionMessage('الرجاء اختيار وظيفة أولاً', 'error');
+            }
+        }
+
+        // إلغاء اختيار الدور
+        function cancelRoleSelection() {
+            selectedRole = null;
+            hideRolesModal();
+            showSelectionMessage('تم إلغاء اختيار الوظيفة', 'error');
+        }
+
+        // إنشاء رسالة الإنضمام
+        function createJoinMessage() {
+            if (selectedServer !== null && selectedRole !== null) {
+                const server = servers[selectedServer];
+                const role = roles[selectedRole];
+                
+                currentMessage = `مرحباً، أنا مهتم بالانضمام إلى سيرفر ${server.name} كـ ${role.name}.\n\n${role.message}\n\nشكراً!`;
+                
+                // عرض نافذة الرسالة
+                showMessageModal();
+            }
+        }
+
+        // إرسال الرسالة عبر الإنستجرام
+        function sendMessage() {
+            if (selectedServer !== null) {
+                const server = servers[selectedServer];
+                window.open(server.instagramLink, '_blank');
+                copyToClipboard(currentMessage);
+            }
+        }
+
+        // نسخ الرسالة
+        function copyMessage() {
+            copyToClipboard(currentMessage);
+            showSelectionMessage('تم نسخ الرسالة إلى الحافظة، يرجى لصقها في جروب الإنستجرام', 'success');
+        }
+
+        // عرض نافذة الأدوار
+        function showRolesModal() {
+            rolesModal.classList.add('active');
+        }
+
+        // إخفاء نافذة الأدوار
+        function hideRolesModal() {
+            rolesModal.classList.remove('active');
+        }
+
+        // عرض نافذة الرسالة
+        function showMessageModal() {
+            if (selectedServer !== null && selectedRole !== null) {
+                const server = servers[selectedServer];
+                const role = roles[selectedRole];
+                
+                messageContent.textContent = currentMessage;
+                
+                // تعيين رابط الإنستجرام مع نص الرسالة
+                sendMessageBtn.href = server.instagramLink;
+                
+                messageModal.classList.add('active');
+            }
+        }
+
+        // إخفاء نافذة الرسالة
+        function hideMessageModal() {
+            messageModal.classList.remove('active');
+        }
+
+        // عرض رسالة الاختيار
+        function showSelectionMessage(message, type = '') {
+            messageText.textContent = message;
+            selectionMessage.className = 'selection-message';
+            
+            if (type === 'error') {
+                selectionMessage.classList.add('error');
+            } else if (type === 'success') {
+                selectionMessage.classList.add('success');
+            }
+            
+            // إظهار الرسالة مع حركة
+            setTimeout(() => {
+                selectionMessage.classList.add('show');
+            }, 10);
+            
+            // إخفاء الرسالة بعد 5 ثواني
+            setTimeout(() => {
+                hideSelectionMessage();
+            }, 5000);
+        }
+
+        // إخفاء رسالة الاختيار
+        function hideSelectionMessage() {
+            selectionMessage.classList.remove('show');
+        }
+
+        // إخفاء نافذة التحقق
+        function hideVerificationModal() {
+            verificationModal.classList.remove('active');
+            mainContent.style.display = 'block';
+        }
+
+        // نسخ النص إلى الحافظة
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showSelectionMessage('تم نسخ الرسالة إلى الحافظة!', 'success');
+            }, function() {
+                // طريقة بديلة إذا لم تعمل Clipboard API
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showSelectionMessage('تم نسخ الرسالة إلى الحافظة!', 'success');
+            });
+        }
+    </script>
 </body>
 </html>
