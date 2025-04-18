@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحميل التطبيق</title>
+    <title>تحميل التطبيقات</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
         
@@ -92,6 +92,7 @@
             border: none;
             cursor: pointer;
             animation: pulse 2s infinite;
+            margin: 10px;
         }
         
         .download-btn:hover {
@@ -145,19 +146,19 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
-        .coming-soon {
+        .apps-container {
             margin: 80px 0;
             text-align: center;
         }
         
-        .coming-soon h2 {
+        .apps-container h2 {
             font-size: 2rem;
             margin-bottom: 40px;
             position: relative;
             display: inline-block;
         }
         
-        .coming-soon h2::after {
+        .apps-container h2::after {
             content: "";
             position: absolute;
             bottom: -10px;
@@ -170,7 +171,7 @@
         
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
@@ -187,6 +188,9 @@
             transform: translateY(20px);
             animation: fadeInUp 0.5s ease forwards;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .app-card:nth-child(1) { animation-delay: 0.1s; }
@@ -194,7 +198,6 @@
         .app-card:nth-child(3) { animation-delay: 0.3s; }
         .app-card:nth-child(4) { animation-delay: 0.4s; }
         .app-card:nth-child(5) { animation-delay: 0.5s; }
-        .app-card:nth-child(6) { animation-delay: 0.6s; }
         
         .app-card:hover {
             transform: translateY(-10px);
@@ -202,8 +205,8 @@
         }
         
         .app-icon {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             border-radius: 15px;
             object-fit: cover;
             margin-bottom: 15px;
@@ -212,12 +215,15 @@
         
         .app-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
         }
         
-        .app-status {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
+        .app-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            line-height: 1.5;
         }
         
         .floating-elements {
@@ -295,22 +301,37 @@
             }
             
             .apps-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
             
             .app-screenshot {
                 width: 200px;
             }
-        }
-        
-        @media (max-width: 480px) {
+            
             .download-btn {
                 padding: 12px 30px;
                 font-size: 1rem;
+                margin: 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                width: 80px;
+                height: 80px;
             }
             
-            .apps-grid {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .app-card {
+                padding: 15px;
+            }
+            
+            .app-icon {
+                width: 60px;
+                height: 60px;
             }
         }
     </style>
@@ -325,15 +346,15 @@
     
     <div class="container">
         <header>
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwBGJtSdXoBs_lY2Uxx59A-xZalKMx6aqw83NOS3Jri7BePCkQhyphenhyphenw4ol6vKgz3VDYA-enaGsLBH7PPipvMz6a_DoPEUTXeSutcm5YTLZxUtlxgky2DBIeoHj5acTRifwzmfMCr_60QAOYj/s1600/988593_109938552679239_2117345662121696429_n.jpg" alt="تطبيقنا" class="logo">
-            <h1>هكر العاب</h1>
-            <p>اكتشف تجربة فريدة مع تطبيقنا الذي صمم خصيصاً ليلبي جميع احتياجاتك بطريقة سهلة وسلسة. حمل الآن واستمتع بميزات رائعة!</p>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwBGJtSdXoBs_lY2Uxx59A-xZalKMx6aqw83NOS3Jri7BePCkQhyphenhyphenw4ol6vKgz3VDYA-enaGsLBH7PPipvMz6a_DoPEUTXeSutcm5YTLZxUtlxgky2DBIeoHj5acTRifwzmfMCr_60QAOYj/s1600/988593_109938552679239_2117345662121696429_n.jpg" alt="تطبيقاتنا" class="logo">
+            <h1>أفضل تطبيقات الألعاب والهكر</h1>
+            <p>اكتشف مجموعة من أفضل التطبيقات لتعديل الألعاب وتغيير الموقع الجغرافي بدون رووت. حمل الآن واستمتع بميزات رائعة!</p>
         </header>
         
         <div class="download-section">
             <img src="https://play-lh.googleusercontent.com/_eGNkkVJQ4gTjw4x3zHel59s28vEUujgbTzpmpa1ME78s_XPOJfF47KAzQ26TUug20I" alt="صورة التطبيق" class="app-screenshot">
             <div>
-                <a href="https://www.webintoapp.com/download/apk/698461/app-release.apk" class="download-btn">تحميل التطبيق</a>
+                <a href="https://www.webintoapp.com/download/apk/698461/app-release.apk" class="download-btn">تحميل هكر الألعاب</a>
             </div>
         </div>
         
@@ -351,38 +372,28 @@
             </a>
         </div>
         
-        <div class="coming-soon">
-            <h2>تطبيقاتنا القادمة</h2>
+        <div class="apps-container">
+            <h2>تطبيقات مميزة أخرى</h2>
             <div class="apps-grid">
                 <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 1" class="app-icon">
-                    <div class="app-title">تطبيق التعليم</div>
-                    <div class="app-status">قريباً</div>
+                    <img src="https://gamekillerapp.com/images/gamekiller-logo.png" alt="Game Killer" class="app-icon">
+                    <div class="app-title">Game Killer</div>
+                    <div class="app-description">أداة قوية لتعديل قيم الألعاب مثل الذهب والمال والخبرة بدون الحاجة إلى روت</div>
+                    <a href="https://gamekillerapp.com/" class="download-btn">تحميل التطبيق</a>
                 </div>
+                
                 <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 2" class="app-icon">
-                    <div class="app-title">تطبيق الصحة</div>
-                    <div class="app-status">قريباً</div>
+                    <img src="https://gameguardian.net/forum/uploads/set_resources_3/84c1e40ea0e759e3f1505eb1788ddf3c_default_photo.png" alt="Game Guardian" class="app-icon">
+                    <div class="app-title">Game Guardian</div>
+                    <div class="app-description">أداة متقدمة لتعديل الألعاب مع دعم للعديد من الميزات المتقدمة</div>
+                    <a href="https://gameguardian.net/forum/topic/19421-virtual-spaces-to-run-gameguardian-without-root/" class="download-btn">تحميل التطبيق</a>
                 </div>
+                
                 <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 3" class="app-icon">
-                    <div class="app-title">تطبيق السفر</div>
-                    <div class="app-status">قريباً</div>
-                </div>
-                <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 4" class="app-icon">
-                    <div class="app-title">تطبيق الرياضة</div>
-                    <div class="app-status">قريباً</div>
-                </div>
-                <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 5" class="app-icon">
-                    <div class="app-title">تطبيق المال</div>
-                    <div class="app-status">قريباً</div>
-                </div>
-                <div class="app-card">
-                    <img src="https://via.placeholder.com/70" alt="تطبيق 6" class="app-icon">
-                    <div class="app-title">تطبيق الترفيه</div>
-                    <div class="app-status">قريباً</div>
+                    <img src="https://play-lh.googleusercontent.com/6AgV6k7z6XK9XQr7XpBZqXhF3y7Q9Z9X9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q9Q=s180" alt="Fake GPS" class="app-icon">
+                    <div class="app-title">Fake GPS</div>
+                    <div class="app-description">تطبيق لتغيير موقعك الجغرافي في الألعاب والتطبيقات المختلفة</div>
+                    <a href="https://play.google.com/store/apps/details?id=com.lexa.fakegps" class="download-btn">تحميل التطبيق</a>
                 </div>
             </div>
         </div>
@@ -440,4 +451,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
