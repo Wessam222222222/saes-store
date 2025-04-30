@@ -3,209 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأحاديث النبوية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>هاكر ون ستيت - الدفع الآمن</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .hadith-item {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        :root {
+            --primary: #0a1931;
+            --secondary: #185adb;
+            --accent: #ffc947;
+            --dark: #1e2022;
+            --light: #f8f9fa;
         }
-        .hadith-item h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .hadith-narrator, .hadith-text, .hadith-source {
-            color: #000;
-            margin-bottom: 0.5rem;
-        }
-        .hadith-text {
-            font-size: 1.1rem;
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #0a1931 0%, #185adb 100%);
+            color: var(--light);
             line-height: 1.6;
-        }
-        .hadith-source {
-            font-style: italic;
-        }
-        .search-container {
+            min-height: 100vh;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem;
+            align-items: center;
         }
-        .search-container input {
-            width: 70%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 25px 0 0 25px;
-            outline: none;
+        
+        .hacker-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            transition: transform 0.4s ease;
+            position: relative;
         }
-        .search-container button {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 0 25px 25px 0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        
+        .hacker-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
-        .search-container button:hover {
-            background-color: var(--secondary-color);
+        
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .hadith-explanation {
-            background-color: #f9f9f9;
-            border-left: 3px solid var(--primary-color);
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            display: none;
+        
+        .hacker-header {
+            padding: 25px;
+            text-align: center;
+            position: relative;
         }
-        .show-more {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.3rem 0.7rem;
-            border-radius: 15px;
-            cursor: pointer;
+        
+        .hacker-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 201, 71, 0.3);
+        }
+        
+        .hacker-header p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        .hacker-badge {
+            display: inline-block;
+            background: rgba(255, 201, 71, 0.2);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 201, 71, 0.3);
         }
-        .show-more:hover {
-            background-color: var(--secondary-color);
+        
+        .hacker-body {
+            padding: 0 25px 25px;
+        }
+        
+        .features-list {
+            margin: 20px 0;
+            list-style: none;
+        }
+        
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .features-list i {
+            margin-left: 10px;
+            color: var(--accent);
+        }
+        
+        #paypal-container {
+            margin: 30px 0;
+            min-height: 45px;
+        }
+        
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        
+        .security-info i {
+            margin-left: 8px;
+            color: var(--accent);
+        }
+        
+        .glow-effect {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,201,71,0.3) 0%, rgba(255,201,71,0) 70%);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+            z-index: -1;
+        }
+        
+        .glow-effect-2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(24,90,219,0.2) 0%, rgba(24,90,219,0) 70%);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+            z-index: -1;
+        }
+        
+        @media (max-width: 480px) {
+            .hacker-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .product-image {
+                height: 180px;
+            }
+            
+            .hacker-card {
+                border-radius: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>الأحاديث النبوية</h1>
+    <div class="hacker-card">
+        <div class="glow-effect"></div>
+        <div class="glow-effect-2"></div>
         
-        <div class="search-container">
-            <input type="text" id="hadithSearch" placeholder="ابحث عن حديث...">
-            <button onclick="searchHadith()"><i class="fas fa-search"></i></button>
+        <!-- الصورة التي طلبتها -->
+        <img src="https://i.ytimg.com/vi/Nc5PdJYoXSY/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBWXFVGwFXudd7RiLsvHSKQ0ScK0w" 
+             alt="هاكر ون ستيت" 
+             class="product-image">
+        
+        <div class="hacker-header">
+            <h1>هاكر ون ستيت</h1>
+            <p>الحل الشامل للحماية والأمن السيبراني</p>
+            <span class="hacker-badge">إصدار Premium</span>
         </div>
         
-        <main id="hadithList">
-            <!-- Hadiths will be inserted here -->
-        </main>
-        
-        <nav class="bottom-nav">
-            <button onclick="showPage('index.html')">
-                <i class="fas fa-home icon"></i>
-                الرئيسية
-            </button>
-            <button onclick="showPage('hadith.html')" class="active">
-                <i class="fas fa-book icon"></i>
-                الأحاديث
-            </button>
-            <button onclick="showPage('favorites.html')">
-                <i class="fas fa-star icon"></i>
-                المفضلة
-            </button>
-            <button onclick="showPage('settings.html')">
-                <i class="fas fa-cog icon"></i>
-                الإعدادات
-            </button>
-        </nav>
+        <div class="hacker-body">
+            <ul class="features-list">
+                <li><i class="fas fa-shield-alt"></i> <span>حماية متقدمة من الاختراقات</span></li>
+                <li><i class="fas fa-bolt"></i> <span>أدوات احترافية للهاكر الأخلاقي</span></li>
+                <li><i class="fas fa-lock"></i> <span>تشفير من المستوى العسكري</span></li>
+                <li><i class="fas fa-globe"></i> <span>دعم فني على مدار الساعة</span></li>
+            </ul>
+            
+            <div id="paypal-container"></div>
+            
+            <div class="security-info">
+                <i class="fas fa-lock"></i>
+                <span>معاملات آمنة عبر PayPal</span>
+            </div>
+        </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAg1Is85D9IbviBXQZumNbKxpHzB5Dv_pRPmaSjqjGWErYtYtZuMBfeSbMA3ami4SXBSog4qKU87yZmdM&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+    
     <script>
-        const hadiths = [
-            {
-                text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى، فمن كانت هجرته إلى الله ورسوله فهجرته إلى الله ورسوله، ومن كانت هجرته لدنيا يصيبها أو امرأة ينكحها فهجرته إلى ما هاجر إليه",
-                narrator: "عمر بن الخطاب رضي الله عنه",
-                source: "صحيح البخاري",
-                explanation: "هذا الحديث يؤكد على أهمية النية في الأعمال، وأن الأعمال تُقيَّم بحسب النوايا التي وراءها. فالعمل الواحد قد يكون عبادة أو قد يكون عملاً دنيوياً بحتاً، اعتماداً على نية صاحبه."
-            },
-            {
-                text: "من حسن إسلام المرء تركه ما لا يعنيه",
-                narrator: "أبو هريرة رضي الله عنه",
-                source: "سنن الترمذي",
-                explanation: "يحث هذا الحديث المسلم على الاهتمام بما يفيده في دينه ودنياه، وترك ما لا فائدة منه. وهو دعوة لحسن استغلال الوقت والجهد فيما ينفع."
-            },
-            {
-                text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه",
-                narrator: "أنس بن مالك رضي الله عنه",
-                source: "صحيح البخاري",
-                explanation: "هذا الحديث يدعو إلى التحلي بالإيثار ومحبة الخير للآخرين. وهو أساس للتعامل الأخلاقي بين المسلمين، ويعزز روح الأخوة والتعاون في المجتمع."
-            },
-            {
-                text: "الدين النصيحة",
-                narrator: "تميم الداري رضي الله عنه",
-                source: "صحيح مسلم",
-                explanation: "يبين هذا الحديث أن جوهر الدين هو النصح والإرشاد. وهذا يشمل النصيحة لله بطاعته، ولرسوله باتباع سنته، ولأئمة المسلمين وعامتهم بما يصلح دينهم ودنياهم."
-            },
-            {
-                text: "من كان يؤمن بالله واليوم الآخر فليقل خيرا أو ليصمت",
-                narrator: "أبو هريرة رضي الله عنه",
-                source: "صحيح البخاري",
-                explanation: "يحث هذا الحديث على حفظ اللسان وعدم الإكثار من الكلام إلا فيما هو خير. فالصمت خير من الكلام الذي لا فائدة منه أو الذي قد يؤدي إلى لإثم."
-            },
-            {
-                text: "لا تغضب",
-                narrator: "أبو هريرة رضي الله عنه",
-                source: "صحيح البخاري",
-                explanation: "هذا الحديث وصية نبوية بتجنب الغضب لما له من آثار سلبية على الفرد والمجتمع. ويدعو إلى التحلي بالحلم وضبط النفس عند مواجهة المواقف المثيرة للغضب."
-            },
-            {
-                text: "ازهد في الدنيا يحبك الله، وازهد فيما عند الناس يحبك الناس",
-                narrator: "أبو العباس سهل بن سعد الساعدي رضي الله عنه",
-                source: "سنن ابن ماجه",
-                explanation: "يدعو هذا الحديث إلى الزهد في متاع الدنيا وعدم التعلق بها، وكذلك عدم التطلع لما في أيدي الناس. فهذا السلوك يجلب محبة الله ومحبة الناس."
-            }
-        ];
-
-        function displayHadiths(hadithsToDisplay = hadiths) {
-            const hadithList = document.getElementById('hadithList');
-            hadithList.innerHTML = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('paypal-container');
             
-            hadithsToDisplay.forEach((hadith, index) => {
-                const hadithDiv = document.createElement('div');
-                hadithDiv.className = 'hadith-item';
-                hadithDiv.innerHTML = `
-                    <h3>${index + 1}</h3>
-                    <p class="hadith-text">${hadith.text}</p>
-                    <p class="hadith-narrator">الراوي: ${hadith.narrator}</p>
-                    <p class="hadith-source">المصدر: ${hadith.source}</p>
-                    <div class="hadith-explanation" id="explanation-${index}">${hadith.explanation}</div>
-                    <button class="show-more" onclick="toggleExplanation(${index})">عرض الشرح</button>
-                `;
-                hadithList.appendChild(hadithDiv);
-            });
-        }
-
-        function toggleExplanation(index) {
-            const explanation = document.getElementById(`explanation-${index}`);
-            const button = explanation.nextElementSibling;
-            if (explanation.style.display === 'none' || explanation.style.display === '') {
-                explanation.style.display = 'block';
-                button.textContent = 'إخفاء الشرح';
-            } else {
-                explanation.style.display = 'none';
-                button.textContent = 'عرض الشرح';
-            }
-        }
-
-        function searchHadith() {
-            const searchTerm = document.getElementById('hadithSearch').value.toLowerCase();
-            const filteredHadiths = hadiths.filter(hadith => 
-                hadith.text.toLowerCase().includes(searchTerm) ||
-                hadith.narrator.toLowerCase().includes(searchTerm) ||
-                hadith.source.toLowerCase().includes(searchTerm)
-            );
-            displayHadiths(filteredHadiths);
-        }
-
-        function showPage(page) {
-            window.location.href = page;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            displayHadiths();
+            // تأثير تحميل أنيق
+            container.innerHTML = `
+                <div style="text-align:center; padding:15px;">
+                    <div style="display:inline-block; background:rgba(255,201,71,0.2); 
+                        padding:10px 20px; border-radius:8px; border:1px solid rgba(255,201,71,0.3);">
+                        <i class="fas fa-circle-notch fa-spin" style="margin-left:8px; color:#ffc947;"></i>
+                        <span>جاري تحميل نظام الدفع الآمن...</span>
+                    </div>
+                </div>
+            `;
+            
+            // تهيئة زر PayPal
+            paypal.HostedButtons({
+                hostedButtonId: "2LBQGGU377VJS",
+                onInit: function() {
+                    console.log('تم تهيئة زر الدفع بنجاح');
+                },
+                onClick: function() {
+                    // يمكنك إضافة أي إجراء قبل الدفع هنا
+                },
+                onError: function(err) {
+                    console.error('خطأ في نظام الدفع:', err);
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:15px; background:rgba(255,0,0,0.1); 
+                            border-radius:8px; border:1px solid rgba(255,0,0,0.3);">
+                            <i class="fas fa-exclamation-triangle" style="margin-left:8px;"></i>
+                            <span>حدث خطأ في تحميل نظام الدفع، يرجى تحديث الصفحة</span>
+                        </div>
+                    `;
+                }
+            }).render("#paypal-container");
         });
     </script>
 </body>
